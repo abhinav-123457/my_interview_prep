@@ -3,7 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Agentic AI — Interview Study Sheet</title>
+<title>AI Engineering Reference — LLMs, Agents, RAG &amp; Transformers</title>
+<meta name="description" content="A working reference for AI engineering: transformers, agentic systems, RAG, fine-tuning, quantization, vector databases and MCP.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
@@ -18,20 +19,18 @@
 html{scroll-behavior:smooth;scroll-padding-top:72px}
 body{background:var(--bg);color:var(--text);font-family:var(--body);font-size:16px;line-height:1.65;-webkit-font-smoothing:antialiased}
 
-/* ---------- top bar ---------- */
 .topbar{position:sticky;top:0;z-index:100;background:rgba(14,17,23,.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
 .topbar-in{max-width:1400px;margin:0 auto;padding:12px 20px;display:flex;align-items:center;gap:16px}
 .brand{font-family:var(--display);font-weight:700;font-size:15px;letter-spacing:-.01em;white-space:nowrap}
 .brand span{color:var(--amber)}
-.countdown{font-family:var(--mono);font-size:11px;color:var(--coral);border:1px solid rgba(242,112,91,.35);background:rgba(242,112,91,.08);padding:3px 9px;border-radius:4px;white-space:nowrap}
+.tag{font-family:var(--mono);font-size:10.5px;color:var(--teal);border:1px solid rgba(79,209,197,.3);background:rgba(79,209,197,.07);padding:3px 9px;border-radius:4px;white-space:nowrap}
 .progress-wrap{margin-left:auto;display:flex;align-items:center;gap:10px}
 .progress-txt{font-family:var(--mono);font-size:11px;color:var(--muted);white-space:nowrap}
 .progress-bar{width:110px;height:5px;background:var(--surface2);border-radius:3px;overflow:hidden}
 .progress-fill{height:100%;background:linear-gradient(90deg,var(--amber),var(--teal));width:0%;transition:width .4s cubic-bezier(.4,0,.2,1)}
 .menu-btn{display:none;background:var(--surface2);border:1px solid var(--line);color:var(--text);border-radius:6px;padding:6px 10px;font-size:13px;cursor:pointer;font-family:var(--mono)}
 
-/* ---------- layout ---------- */
-.shell{max-width:1400px;margin:0 auto;display:grid;grid-template-columns:270px 1fr;gap:40px;padding:0 20px}
+.shell{max-width:1400px;margin:0 auto;display:grid;grid-template-columns:262px 1fr;gap:40px;padding:0 20px}
 .sidebar{position:sticky;top:72px;height:calc(100vh - 72px);overflow-y:auto;padding:28px 0 60px;scrollbar-width:thin;scrollbar-color:var(--line) transparent}
 .sidebar::-webkit-scrollbar{width:5px}
 .sidebar::-webkit-scrollbar-thumb{background:var(--line);border-radius:3px}
@@ -44,20 +43,16 @@ body{background:var(--bg);color:var(--text);font-family:var(--body);font-size:16
 .navlink.done .rank::after{content:"✓";color:var(--teal)}
 .navlink.done .rank span{display:none}
 
-/* ---------- content ---------- */
 main{padding:36px 0 120px;min-width:0}
-.hero{border:1px solid var(--line);border-radius:12px;background:linear-gradient(160deg,var(--surface) 0%,rgba(22,27,36,.4) 100%);padding:32px;margin-bottom:34px;position:relative;overflow:hidden}
+.hero{border:1px solid var(--line);border-radius:12px;background:linear-gradient(160deg,var(--surface) 0%,rgba(22,27,36,.4) 100%);padding:34px;margin-bottom:34px;position:relative;overflow:hidden}
 .hero::after{content:"";position:absolute;top:-70px;right:-70px;width:220px;height:220px;background:radial-gradient(circle,rgba(232,163,61,.13),transparent 68%);pointer-events:none}
-.hero h1{font-family:var(--display);font-size:clamp(25px,4.2vw,38px);font-weight:700;letter-spacing:-.025em;line-height:1.12;margin-bottom:12px}
+.hero h1{font-family:var(--display);font-size:clamp(26px,4.4vw,40px);font-weight:700;letter-spacing:-.025em;line-height:1.12;margin-bottom:13px}
 .hero h1 em{font-style:normal;color:var(--amber)}
-.hero p{color:var(--muted);max-width:62ch;font-size:15px}
-.hero-role{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--teal);margin-bottom:14px}
-
-/* path strip */
-.path{display:flex;gap:8px;flex-wrap:wrap;margin-top:22px}
+.hero p{color:var(--muted);max-width:64ch;font-size:15px}
+.hero-eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--teal);margin-bottom:14px}
+.path{display:flex;gap:8px;flex-wrap:wrap;margin-top:24px}
 .path a{font-family:var(--mono);font-size:11px;color:var(--muted);background:var(--surface2);border:1px solid var(--line);padding:5px 10px;border-radius:5px;text-decoration:none;transition:.15s}
 .path a:hover{border-color:var(--amber);color:var(--text)}
-.path a b{color:var(--amber);font-weight:500}
 
 section{margin-bottom:56px;scroll-margin-top:76px}
 .sec-head{display:flex;align-items:flex-start;gap:14px;padding-bottom:12px;border-bottom:1px solid var(--line);margin-bottom:22px}
@@ -68,7 +63,7 @@ section{margin-bottom:56px;scroll-margin-top:76px}
 .readbtn.on{background:rgba(79,209,197,.1);border-color:var(--teal);color:var(--teal)}
 
 h3{font-family:var(--display);font-size:18px;font-weight:600;margin:30px 0 11px;letter-spacing:-.01em}
-h4{font-family:var(--display);font-size:15px;font-weight:600;margin:22px 0 8px;color:var(--text)}
+h4{font-family:var(--display);font-size:15px;font-weight:600;margin:22px 0 8px}
 p{margin-bottom:13px;color:#C6CEDA}
 ul,ol{margin:0 0 15px 20px;color:#C6CEDA}
 li{margin-bottom:7px}
@@ -76,23 +71,20 @@ li::marker{color:var(--dim)}
 strong{color:var(--text);font-weight:600}
 em.hl{font-style:normal;color:var(--amber)}
 code{font-family:var(--mono);font-size:.87em;background:var(--surface2);padding:2px 5px;border-radius:4px;color:var(--teal);border:1px solid var(--line)}
-a.ext{color:var(--teal)}
 
-/* callouts */
-.say{border-left:3px solid var(--teal);background:linear-gradient(90deg,rgba(79,209,197,.07),transparent);padding:15px 18px;border-radius:0 8px 8px 0;margin:16px 0}
-.say-lb{font-family:var(--mono);font-size:10px;letter-spacing:.13em;text-transform:uppercase;color:var(--teal);margin-bottom:7px}
-.say p{color:var(--text);margin:0;font-size:14.7px}
-.say p+p{margin-top:9px}
+.key{border-left:3px solid var(--teal);background:linear-gradient(90deg,rgba(79,209,197,.07),transparent);padding:15px 18px;border-radius:0 8px 8px 0;margin:16px 0}
+.key-lb{font-family:var(--mono);font-size:10px;letter-spacing:.13em;text-transform:uppercase;color:var(--teal);margin-bottom:7px}
+.key p:last-child{margin-bottom:0}
+.key p{color:var(--text);font-size:14.7px}
 
 .warn{border-left:3px solid var(--coral);background:linear-gradient(90deg,rgba(242,112,91,.08),transparent);padding:15px 18px;border-radius:0 8px 8px 0;margin:16px 0}
 .warn-lb{font-family:var(--mono);font-size:10px;letter-spacing:.13em;text-transform:uppercase;color:var(--coral);margin-bottom:7px}
 .warn p:last-child{margin-bottom:0}
 
-.you{border-left:3px solid var(--violet);background:linear-gradient(90deg,rgba(155,140,255,.07),transparent);padding:15px 18px;border-radius:0 8px 8px 0;margin:16px 0}
-.you-lb{font-family:var(--mono);font-size:10px;letter-spacing:.13em;text-transform:uppercase;color:var(--violet);margin-bottom:7px}
-.you p:last-child{margin-bottom:0}
+.note{border-left:3px solid var(--violet);background:linear-gradient(90deg,rgba(155,140,255,.07),transparent);padding:15px 18px;border-radius:0 8px 8px 0;margin:16px 0}
+.note-lb{font-family:var(--mono);font-size:10px;letter-spacing:.13em;text-transform:uppercase;color:var(--violet);margin-bottom:7px}
+.note p:last-child{margin-bottom:0}
 
-/* tables */
 .tw{overflow-x:auto;margin:16px 0;border:1px solid var(--line);border-radius:9px}
 table{width:100%;border-collapse:collapse;font-size:13.6px;min-width:480px}
 th{background:var(--surface2);text-align:left;padding:10px 13px;font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--line);font-weight:500}
@@ -105,7 +97,6 @@ td strong{color:var(--text)}
 
 pre{background:var(--surface);border:1px solid var(--line);border-radius:9px;padding:15px;overflow-x:auto;margin:15px 0;font-family:var(--mono);font-size:12.4px;line-height:1.62;color:#B9C2D0}
 pre .c{color:var(--amber)}
-
 .formula{background:var(--surface);border:1px solid var(--line);border-left:3px solid var(--amber);border-radius:0 9px 9px 0;padding:15px 18px;margin:15px 0;font-family:var(--mono);font-size:14px;color:var(--text);overflow-x:auto}
 
 .grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px;margin:16px 0}
@@ -113,11 +104,9 @@ pre .c{color:var(--amber)}
 .card h5{font-family:var(--display);font-size:14.5px;font-weight:600;margin-bottom:7px;color:var(--amber)}
 .card p:last-child,.card ul:last-child{margin-bottom:0}
 .card ul{margin-left:17px;font-size:13.7px}
-
 .divider{height:1px;background:var(--line);margin:34px 0}
-
 footer{border-top:1px solid var(--line);padding:30px 0 50px;color:var(--dim);font-size:13px}
-footer strong{color:var(--muted)}
+footer a{color:var(--muted)}
 
 @media(max-width:900px){
   .shell{grid-template-columns:1fr;gap:0}
@@ -125,6 +114,7 @@ footer strong{color:var(--muted)}
   .sidebar.open{display:block}
   .menu-btn{display:block}
   .brand{font-size:13px}
+  .tag{display:none}
   .progress-bar{width:70px}
   main{padding-top:26px}
   .hero{padding:22px}
@@ -133,13 +123,14 @@ footer strong{color:var(--muted)}
 </style>
 </head>
 <body>
+
 <div class="topbar">
   <div class="topbar-in">
     <button class="menu-btn" onclick="document.querySelector('.sidebar').classList.toggle('open')">☰</button>
-    <div class="brand">Agentic AI · <span>Study Sheet</span></div>
-    <div class="countdown">INTERVIEW TOMORROW</div>
+    <div class="brand">AI Engineering · <span>Reference</span></div>
+    <div class="tag">MCP spec 2026-07-28</div>
     <div class="progress-wrap">
-      <div class="progress-txt" id="ptxt">0 / 9</div>
+      <div class="progress-txt" id="ptxt">0 / 13</div>
       <div class="progress-bar"><div class="progress-fill" id="pfill"></div></div>
     </div>
   </div>
@@ -147,434 +138,80 @@ footer strong{color:var(--muted)}
 
 <div class="shell">
 <aside class="sidebar">
-  <div class="side-label">Read in this order</div>
-  <a class="navlink" href="#ngram"><span class="rank"><span>1</span></span> Context length ≠ n-grams</a>
-  <a class="navlink" href="#mcp"><span class="rank"><span>2</span></span> MCP — just changed</a>
-  <a class="navlink" href="#agentic"><span class="rank"><span>3</span></span> Agentic AI</a>
-  <a class="navlink" href="#rag"><span class="rank"><span>4</span></span> RAG</a>
-  <a class="navlink" href="#finetune"><span class="rank"><span>5</span></span> Fine-tuning &amp; training</a>
-  <a class="navlink" href="#transformers"><span class="rank"><span>6</span></span> Transformers</a>
-  <div class="side-label">If time allows</div>
-  <a class="navlink" href="#vectordb"><span class="rank"><span>7</span></span> Vector databases</a>
-  <a class="navlink" href="#langchain"><span class="rank"><span>8</span></span> LangChain &amp; LangGraph</a>
-  <a class="navlink" href="#rapid"><span class="rank"><span>9</span></span> Rapid-fire answers</a>
-  <div class="side-label">Reference</div>
-  <a class="navlink" href="#llm101"><span class="rank"><span>·</span></span> LLM fundamentals</a>
+  <div class="side-label">Foundations</div>
+  <a class="navlink" href="#transformers"><span class="rank"><span>01</span></span> Transformers</a>
+  <a class="navlink" href="#context"><span class="rank"><span>02</span></span> Context length &amp; n-grams</a>
+  <a class="navlink" href="#llm101"><span class="rank"><span>03</span></span> LLM fundamentals</a>
+  <div class="side-label">Training</div>
+  <a class="navlink" href="#finetune"><span class="rank"><span>04</span></span> Fine-tuning &amp; PEFT</a>
+  <a class="navlink" href="#mechanics"><span class="rank"><span>05</span></span> Training mechanics</a>
+  <a class="navlink" href="#inference"><span class="rank"><span>06</span></span> Quantization &amp; inference</a>
+  <div class="side-label">Retrieval</div>
+  <a class="navlink" href="#rag"><span class="rank"><span>07</span></span> RAG</a>
+  <a class="navlink" href="#vectordb"><span class="rank"><span>08</span></span> Vector databases</a>
+  <div class="side-label">Agents</div>
+  <a class="navlink" href="#agentic"><span class="rank"><span>09</span></span> Agentic AI</a>
+  <a class="navlink" href="#mcp"><span class="rank"><span>10</span></span> MCP</a>
+  <a class="navlink" href="#langchain"><span class="rank"><span>11</span></span> LangChain &amp; LangGraph</a>
+  <div class="side-label">Production</div>
+  <a class="navlink" href="#sysdesign"><span class="rank"><span>12</span></span> System design &amp; latency</a>
+  <div class="side-label">Applied</div>
+  <a class="navlink" href="#cv"><span class="rank"><span>13</span></span> Computer vision &amp; edge</a>
   <a class="navlink" href="#api"><span class="rank"><span>·</span></span> Python &amp; APIs</a>
-  <a class="navlink" href="#cv"><span class="rank"><span>·</span></span> Computer vision</a>
-  <a class="navlink" href="#unknown"><span class="rank"><span>·</span></span> When you don't know</a>
+  <a class="navlink" href="#quickref"><span class="rank"><span>·</span></span> Quick reference</a>
 </aside>
 
 <main>
   <div class="hero">
-    <div class="hero-role">Skisoft · Agentic AI Engineer · Delhi NCR</div>
-    <h1>Know your own work cold.<br>Be honest about <em>everything else.</em></h1>
-    <p>You have real depth in retrieval, agent orchestration, CV fine-tuning and edge deployment. That's a strong hand. The only way to lose it is bluffing something you haven't shipped.</p>
+    <div class="hero-eyebrow">Working notes · LLMs · Agents · Retrieval · Vision</div>
+    <h1>The parts of AI engineering<br>that actually <em>come up in practice.</em></h1>
+    <p>Transformers through to production agents — how attention works, what PEFT actually trains, why cross-encoders come second, and what changed in the MCP spec. Written as a reference to return to, not a tutorial to finish.</p>
     <div class="path">
-      <a href="#ngram"><b>1</b> n-grams</a>
-      <a href="#mcp"><b>2</b> MCP</a>
-      <a href="#agentic"><b>3</b> Agentic</a>
-      <a href="#rag"><b>4</b> RAG</a>
-      <a href="#finetune"><b>5</b> Fine-tuning</a>
-      <a href="#transformers"><b>6</b> Transformers</a>
+      <a href="#transformers">Transformers</a>
+      <a href="#finetune">Fine-tuning</a>
+      <a href="#rag">RAG</a>
+      <a href="#agentic">Agents</a>
+      <a href="#sysdesign">System design</a>
+      <a href="#mcp">MCP</a>
+      <a href="#cv">Vision</a>
     </div>
   </div>
-
-  <!-- ============ 1. N-GRAM ============ -->
-  <section id="ngram">
-    <div class="sec-head">
-      <div class="sec-num">01</div>
-      <h2>Context length is not built from n-grams</h2>
-      <button class="readbtn" onclick="mark(this)">mark read</button>
-    </div>
-
-    <div class="warn">
-      <div class="warn-lb">Correcting a misconception</div>
-      <p>You asked how context length is built using n-grams and bigrams. It isn't. Those are the <strong>pre-2017 statistical</strong> approach that transformers replaced. Saying it in the room would signal a gap in fundamentals — so here's the real answer.</p>
-    </div>
-
-    <h3>N-grams — the old way</h3>
-    <p>An <strong>n-gram</strong> model predicts the next word using only the previous <em class="hl">n−1</em> words, by counting frequencies in a corpus.</p>
-    <ul>
-      <li><strong>Bigram (n=2):</strong> P(next | 1 previous word). "New" → "York" is frequent, so predict "York."</li>
-      <li><strong>Trigram (n=3):</strong> P(next | 2 previous words).</li>
-    </ul>
-
-    <h4>Three fatal flaws</h4>
-    <ol>
-      <li><strong>Fixed, tiny window.</strong> A 5-gram sees 4 words. It cannot connect "the drone" at the start of a paragraph to "it" at the end.</li>
-      <li><strong>Combinatorial explosion.</strong> A 50,000-word vocabulary gives 50,000³ = 125 trillion possible trigrams. Most never occur — the <em class="hl">sparsity problem</em> — forcing hacks like smoothing and backoff.</li>
-      <li><strong>No notion of meaning.</strong> "cat" and "kitten" are unrelated symbols with no shared representation.</li>
-    </ol>
-
-    <h3>Transformers — how it actually works</h3>
-    <p>Context length comes from <strong>self-attention</strong>, not counting.</p>
-    <ul>
-      <li>Every token becomes an <strong>embedding</strong> — a dense vector carrying meaning.</li>
-      <li><strong>Self-attention lets every token look at every other token in the window at once</strong>, learning how much to weight each. Token 4,000 can attend directly to token 1.</li>
-      <li><strong>Context length = how many tokens can be attended over simultaneously.</strong> Bounded by architecture and compute, not by an n-gram order.</li>
-      <li>The real limit is cost: attention is <code>O(n²)</code>. Double the context, quadruple compute and memory. That is the entire reason long context is expensive.</li>
-      <li><strong>Positional encoding</strong> supplies order, since attention alone is order-blind. Modern models use <strong>RoPE</strong>, which also enables context extension beyond the trained length.</li>
-    </ul>
-
-    <div class="say">
-      <div class="say-lb">Say it like this</div>
-      <p>"Context length comes from self-attention — every token attends to every other token in the window, so there's no fixed n-word lookback like an n-gram model. The constraint is that attention scales quadratically with sequence length, which is why long context is expensive. N-grams were the older statistical approach with a fixed tiny window and severe sparsity problems; transformers replaced them precisely because attention handles long-range dependencies."</p>
-    </div>
-
-    <p><strong>If they ask about n-grams directly</strong>, they're testing NLP history. Say they were the pre-neural approach, name the sparsity and fixed-window problems, and note transformers solved both.</p>
-  </section>
-
-  <!-- ============ 2. MCP ============ -->
-  <section id="mcp">
-    <div class="sec-head">
-      <div class="sec-num">02</div>
-      <h2>MCP — and the change from three weeks ago</h2>
-      <button class="readbtn" onclick="mark(this)">mark read</button>
-    </div>
-
-    <div class="warn">
-      <div class="warn-lb">In their required skills · recently changed</div>
-      <p>The <strong>2026-07-28 specification</strong> shipped on 28 July 2026 — the largest revision since launch. Most candidates will describe the old stateful model. Describing the new one puts you ahead of people with years more experience.</p>
-    </div>
-
-    <h3>What it is, in one sentence</h3>
-    <p>An open standard for connecting AI models to external tools and data, so you don't write bespoke glue for every integration — often called "a USB-C port for AI tools." It passes <strong>JSON-RPC</strong> messages between an MCP <strong>client</strong> (your AI app) and an MCP <strong>server</strong> (the thing exposing tools and data).</p>
-
-    <h4>The three primitives</h4>
-    <div class="grid2">
-      <div class="card"><h5>Tools</h5><p>Callable functions the model can invoke. This is the one that matters most.</p></div>
-      <div class="card"><h5>Resources</h5><p>Data the model can read.</p></div>
-      <div class="card"><h5>Prompts</h5><p>Reusable prompt templates.</p></div>
-    </div>
-
-    <h3>Old vs new — know both</h3>
-    <div class="tw">
-    <table>
-      <thead><tr><th></th><th class="old">Old · 2025-11-25</th><th class="new">Current · 2026-07-28</th></tr></thead>
-      <tbody>
-        <tr><td><strong>Core model</strong></td><td class="old">Stateful</td><td class="new">Stateless</td></tr>
-        <tr><td><strong>Handshake</strong></td><td class="old"><code>initialize</code> / <code>initialized</code> required</td><td class="new">Removed</td></tr>
-        <tr><td><strong>Sessions</strong></td><td class="old"><code>Mcp-Session-Id</code> pinned you to one server instance</td><td class="new">Removed — any instance serves any request</td></tr>
-        <tr><td><strong>Deployment</strong></td><td class="old">Sticky sessions, shared session store, held-open streams</td><td class="new">Plain round-robin load balancer</td></tr>
-        <tr><td><strong>Long-running work</strong></td><td class="old">In core</td><td class="new">Moved to the <strong>Tasks</strong> extension</td></tr>
-        <tr><td><strong>Extensions</strong></td><td class="old">—</td><td class="new">New framework, incl. <strong>MCP Apps</strong> (server-rendered UI)</td></tr>
-        <tr><td><strong>Auth</strong></td><td class="old">OAuth 2.1</td><td class="new">Hardened, closer to OAuth / OIDC; Dynamic Client Registration deprecated</td></tr>
-        <tr><td><strong>Deprecated</strong></td><td class="old">—</td><td class="new">Roots, Sampling, Logging (SEP-2577)</td></tr>
-      </tbody>
-    </table>
-    </div>
-
-    <h4>Transports (both versions)</h4>
-    <ul>
-      <li><strong>stdio</strong> — server runs as a local subprocess over stdin/stdout. Simplest for local tools.</li>
-      <li><strong>Streamable HTTP</strong> — single endpoint, POST/GET, optional SSE streaming. Replaced the older HTTP+SSE transport in the 2025-03-26 revision.</li>
-    </ul>
-    <p><strong>Versioning</strong> uses dates: <code>YYYY-MM-DD</code>. Tier 1 SDKs are TypeScript, Python, Go and C#, and all preserved backward compatibility — existing servers didn't break.</p>
-
-    <div class="say">
-      <div class="say-lb">Say it like this</div>
-      <p>"I haven't used MCP in production yet. My understanding is it's the open standard for connecting models to external tools and data — JSON-RPC between a client and server, exposing tools, resources and prompts.</p>
-      <p>The notable thing is it just went through its biggest revision, the 2026-07-28 spec, which made the protocol stateless — they removed the initialize handshake and the session header, so a remote MCP server can now sit behind an ordinary load balancer instead of needing sticky sessions. Long-running work moved into a Tasks extension.</p>
-      <p>Conceptually it solves the same problem my decision-LLM router solves in JARVIS — deciding which tool to call and calling it — but standardised, so any client can talk to any server."</p>
-    </div>
-  </section>
-
-  <!-- ============ 3. AGENTIC ============ -->
-  <section id="agentic">
-    <div class="sec-head">
-      <div class="sec-num">03</div>
-      <h2>Agentic AI — the job title</h2>
-      <button class="readbtn" onclick="mark(this)">mark read</button>
-    </div>
-
-    <h3>What makes something an agent</h3>
-    <p>An LLM that can <strong>decide and act</strong>, not just answer. Five parts:</p>
-    <ol>
-      <li><strong>Perception</strong> — takes input (text, voice, image, documents)</li>
-      <li><strong>Reasoning / routing</strong> — decides what to do</li>
-      <li><strong>Tool use</strong> — calls external functions, APIs, retrieval</li>
-      <li><strong>Memory</strong> — carries state across turns</li>
-      <li><strong>Autonomy</strong> — acts without being prompted each time</li>
-    </ol>
-
-    <div class="you">
-      <div class="you-lb">Your work</div>
-      <p><strong>JARVIS has all five.</strong> Say that explicitly. Router + decision LLM (2,3), Whisper/vision/document handlers (1,3), five Notion databases (4), cron-triggered workflows and the 5-minute reminder check (5).</p>
-    </div>
-
-    <h4>The agent loop</h4>
-    <pre>Observe → Think (which tool?) → Act (call tool) → Observe result → repeat → Answer</pre>
-
-    <h3>Patterns to know by name</h3>
-    <ul>
-      <li><strong>ReAct (Reason + Act)</strong> — interleaved <code>Thought → Action → Observation</code> cycles. The foundational pattern.</li>
-      <li><strong>Function / tool calling</strong> — you pass tool JSON schemas → the model returns a structured <code>tool_call</code> with name and arguments → <strong>your code executes it</strong> (the model never runs anything) → you return the result as a tool message → the model continues. Modern APIs support parallel tool calls.</li>
-      <li><strong>Router pattern</strong> — a classifier picks the right handler. <em class="hl">Exactly what your Message Router and Decision LLM do.</em></li>
-      <li><strong>Planning</strong> — <strong>Plan-and-Execute</strong> (full plan, then run), <strong>ReWOO</strong> (plan without observations to save calls), <strong>Reflexion</strong> (self-critique and retry), <strong>Tree of Thoughts</strong> (explore branches).</li>
-      <li><strong>Multi-agent</strong> — <strong>CrewAI</strong> (role-based crews), <strong>AutoGen</strong> (Microsoft, conversational), <strong>Google ADK</strong> (<em class="hl">you hold this certification — mention it</em>), <strong>LangGraph</strong> (graph-based, most control), OpenAI Agents SDK.</li>
-      <li><strong>Human-in-the-loop</strong> — pause for approval before a consequential action.</li>
-    </ul>
-
-    <h3>The engineering disciplines</h3>
-    <div class="grid2">
-      <div class="card"><h5>Harness engineering</h5><p>The scaffolding around the model: feeding context, exposing tools, parsing outputs, retries, limits. The harness often matters more than the model.</p></div>
-      <div class="card"><h5>Loop engineering</h5><p>Stopping conditions, max iterations, detecting repeat loops, knowing when to give up and escalate.</p></div>
-      <div class="card"><h5>Context engineering</h5><p>What goes in the window and in what order. Budgeting tokens across system prompt, tools, memory, retrieved docs and history. Currently the highest-leverage skill in agent building.</p></div>
-      <div class="card"><h5>Tool design</h5><p>Few well-named tools with precise descriptions and strict schemas beat many overlapping ones. Return errors the model can act on.</p></div>
-      <div class="card"><h5>Memory architecture</h5><p>Short-term (window), long-term (vector store), episodic (what happened), semantic (facts), procedural (how to). Decide what to write, when to retrieve, when to forget.</p></div>
-      <div class="card"><h5>Guardrails &amp; permissions</h5><p>Input validation, output filtering, tool allow-lists, scoped credentials, spend caps, sandboxing, approval gates.</p></div>
-      <div class="card"><h5>Observability &amp; tracing</h5><p>Spans per LLM and tool call, token and cost accounting, latency breakdown, failure clustering. LangSmith, Langfuse, OpenTelemetry, Arize Phoenix.</p></div>
-      <div class="card"><h5>Orchestration patterns</h5><p>Single agent + tools; router/dispatcher; supervisor + workers; sequential pipeline; parallel fan-out then aggregate; reflection.</p></div>
-    </div>
-
-    <h3>Evaluating agents</h3>
-    <p>A common question, and most candidates fumble it. Answer in layers:</p>
-    <ul>
-      <li><strong>Task success rate</strong> — did it achieve the goal end to end</li>
-      <li><strong>Tool-call accuracy</strong> — right tool, right arguments</li>
-      <li><strong>Trajectory evaluation</strong> — was the <em class="hl">path</em> sensible, not just the final answer</li>
-      <li><strong>LLM-as-judge</strong> — a model scores outputs against a rubric</li>
-      <li><strong>Latency and cost per task</strong> — production reality</li>
-      <li><strong>Regression suite</strong> — fixed test cases run on every change</li>
-    </ul>
-
-    <div class="say">
-      <div class="say-lb">Your answer</div>
-      <p>"In my BTC OpenEnv project I built exactly this — a grading system with dense reward shaping and fully seeded, reproducible scoring, then benchmarked three agents against identical graded tasks. That's agent evaluation, in an RL framing."</p>
-    </div>
-
-    <div class="you">
-      <div class="you-lb">Name your own weak spot first</div>
-      <p><strong>Observability is the gap in JARVIS.</strong> No tracing, no alerting, no cost dashboards. Say so before they find it: "That's the layer I'd add first in a real deployment."</p>
-    </div>
-  </section>
-  <!-- ============ 4. RAG ============ -->
-  <section id="rag">
-    <div class="sec-head">
-      <div class="sec-num">04</div>
-      <h2>RAG — you've built most of this</h2>
-      <button class="readbtn" onclick="mark(this)">mark read</button>
-    </div>
-
-    <pre>Documents → Chunking → Embedding → Vector store
-                                        ↓
-User query → Embed → Similarity search (top-k) → <span class="c">[Rerank]</span> → Prompt → LLM → Answer</pre>
-
-    <h3>Document parsing</h3>
-    <p>PDFs, DOCX and HTML into clean text. The hard parts are tables, multi-column layouts, scanned pages needing OCR, and headers/footers. Tools: unstructured.io, PyMuPDF, LlamaParse. <strong>Garbage parsing gives garbage RAG.</strong></p>
-
-    <h3>Chunking strategies</h3>
-    <ul>
-      <li><strong>Fixed-size + overlap</strong> — simple baseline (e.g. 512 tokens, 50 overlap). Overlap stops ideas being cut in half.</li>
-      <li><strong>Recursive character</strong> — split on paragraph → sentence → word boundaries in order.</li>
-      <li><strong>Semantic chunking</strong> — split where embedding similarity drops, i.e. at topic changes.</li>
-      <li><strong>Structure-aware</strong> — split by heading or section. Usually best when structure exists.</li>
-      <li><strong>Parent-document / small-to-big</strong> — embed small chunks for precise retrieval, return the larger parent for context.</li>
-    </ul>
-    <p><strong>The trade-off:</strong> small chunks give precise retrieval but lose context; large chunks keep context but retrieve noisily. <em class="hl">Chunking quality determines RAG quality more than model choice.</em></p>
-
-    <h3>Embeddings and vector search</h3>
-    <p>Text becomes a vector so semantic similarity becomes distance. Models: <code>all-MiniLM-L6-v2</code> (fast, 384-dim, <em class="hl">yours</em>), BGE, E5, OpenAI text-embedding-3. <strong>The same model must embed both documents and queries.</strong></p>
-    <ul>
-      <li><strong>Exact kNN</strong> is O(n) — too slow at scale, so we approximate (<strong>ANN</strong>).</li>
-      <li><strong>HNSW</strong> — layered proximity graph, greedy search from the top layer down. Fast, high recall, memory-hungry. The common default.</li>
-      <li><strong>IVF</strong> — cluster the vectors, search only the nearest <code>nprobe</code> clusters. Lower memory; recall depends on nprobe.</li>
-      <li><strong>IVF-PQ</strong> — adds Product Quantization to compress vectors. Big memory savings, some accuracy cost.</li>
-      <li><strong>Metrics</strong> — cosine similarity, dot product, L2.</li>
-    </ul>
-
-    <h3>Reranking — your architecture</h3>
-    <div class="grid2">
-      <div class="card"><h5>Bi-encoder</h5><p>Embeds query and document <strong>separately</strong>. Fast, precomputable, scales to millions.</p></div>
-      <div class="card"><h5>Cross-encoder</h5><p>Processes query and document <strong>together</strong>. Far more accurate, far too slow for 100,000 docs.</p></div>
-    </div>
-    <div class="you">
-      <div class="you-lb">Your work</div>
-      <p><strong>This is exactly why you retrieve 500 then rerank.</strong> Say it in those terms — broad recall from the bi-encoder, precision from the cross-encoder. Your reranker (<code>ms-marco-MiniLM</code>) is an <strong>encoder</strong> model, which is why it reads query and document bidirectionally and scores better.</p>
-    </div>
-
-    <h3>Beyond the basics</h3>
-    <ul>
-      <li><strong>Hybrid search</strong> — dense semantic + sparse keyword (<strong>BM25</strong>). BM25 catches exact terms, product codes and rare names that embeddings blur. Merge with <strong>Reciprocal Rank Fusion</strong>.</li>
-      <li><strong>Query transformation</strong> — rewriting, multi-query paraphrases, or decomposition into sub-questions.</li>
-      <li><strong>HyDE</strong> — ask the LLM to write a <em class="hl">hypothetical answer</em>, embed that, and search with it. Works because a fake answer sits closer in embedding space to real answers than the question does. Good one to name-drop.</li>
-      <li><strong>Context integration</strong> — ordering matters; models attend more to the start and end, the "lost in the middle" problem. Also deduplication, token budgeting, compression.</li>
-      <li><strong>Multi-hop reasoning</strong> — chained retrieval for questions like "who directed the film that won X?" Requires retrieve → reason → retrieve again.</li>
-      <li><strong>Citation generation</strong> — tie every claim to a source. <em class="hl">Your attribute-grounded reasoning strings are this idea.</em></li>
-    </ul>
-
-    <h3>RAG evaluation — RAGAS</h3>
-    <div class="tw">
-    <table>
-      <thead><tr><th>Metric</th><th>Question it answers</th></tr></thead>
-      <tbody>
-        <tr><td><strong>Faithfulness</strong></td><td>Is the answer actually supported by the retrieved context? (hallucination check)</td></tr>
-        <tr><td><strong>Answer relevance</strong></td><td>Does it address the question asked?</td></tr>
-        <tr><td><strong>Context precision</strong></td><td>Are the retrieved chunks relevant?</td></tr>
-        <tr><td><strong>Context recall</strong></td><td>Did retrieval find everything needed?</td></tr>
-        <tr><td><strong>Hit rate, MRR, NDCG@k</strong></td><td>Standard retrieval ranking quality</td></tr>
-      </tbody>
-    </table>
-    </div>
-    <p><strong>Key insight worth saying:</strong> evaluate retrieval and generation <em class="hl">separately</em> — most RAG failures are retrieval failures.</p>
-
-    <div class="say">
-      <div class="say-lb">Your strongest RAG line</div>
-      <p>"My ranking system is a RAG retrieval stack without the generation step — dense embedding retrieval over a FAISS index, then cross-encoder reranking, across 100,000 records CPU-only in under 50 seconds. And I built grounding into it: the reasoning strings are constructed from actual parsed attributes, so the system can't hallucinate a justification."</p>
-    </div>
-  </section>
-
-  <!-- ============ 5. FINE-TUNING ============ -->
-  <section id="finetune">
-    <div class="sec-head">
-      <div class="sec-num">05</div>
-      <h2>Fine-tuning &amp; LLM training</h2>
-      <button class="readbtn" onclick="mark(this)">mark read</button>
-    </div>
-
-    <h3>Where fine-tuning fits</h3>
-    <p><strong>Prompting</strong> (change instructions) → <strong>RAG</strong> (change available knowledge) → <strong>Fine-tuning</strong> (change the weights).</p>
-    <p class="formula" style="font-family:var(--body)">Rule of thumb: <strong>RAG for facts, fine-tuning for behaviour, format and domain style.</strong></p>
-
-    <h3>SFT and PEFT</h3>
-    <p><strong>SFT — Supervised Fine-Tuning:</strong> train on labelled input → output pairs. The standard first step for adapting a base model to a task or instruction format.</p>
-    <p><strong>PEFT — Parameter-Efficient Fine-Tuning:</strong> full fine-tuning of a 70B model needs enormous GPU memory, so PEFT freezes most weights and trains a small number of new parameters.</p>
-
-    <div class="grid2">
-      <div class="card"><h5>LoRA — the dominant method</h5><p>Freeze weight matrix W; learn two small matrices A and B where ΔW ≈ B·A, with rank <em class="hl">r</em> far smaller than full dimension. Trains ~0.1–1% of parameters.</p><ul><li><code>r</code> — rank / capacity (8, 16, 32, 64)</li><li><code>alpha</code> — scaling</li><li>Target modules — usually attention Q/K/V/O</li></ul><p style="margin-top:9px">Adapters are a few MB, so you can swap many onto one base model — and merge them at inference for zero added latency.</p></div>
-      <div class="card"><h5>QLoRA</h5><p>LoRA on a <strong>4-bit quantized</strong> base. Makes fine-tuning large models possible on a single consumer GPU. Introduced NF4, double quantization, paged optimizers.</p></div>
-      <div class="card"><h5>Adapters</h5><p>Small bottleneck layers between transformer layers. Predates LoRA; adds inference latency because it can't be merged.</p></div>
-      <div class="card"><h5>Prefix &amp; Prompt Tuning</h5><p><strong>Prefix:</strong> trainable vectors prepended to keys/values at every layer. <strong>Prompt:</strong> lighter still — soft prompt embeddings at the input only. Works well only at large scale.</p></div>
-      <div class="card"><h5>BitFit</h5><p>Train <strong>only the bias terms</strong>. Extremely few parameters, surprisingly decent on some tasks.</p></div>
-      <div class="card"><h5>Side Tuning</h5><p>Train a separate small side network whose output combines with the frozen base.</p></div>
-    </div>
-
-    <div class="say">
-      <div class="say-lb">If asked "which would you use?"</div>
-      <p>"LoRA or QLoRA in almost every case. They're the practical standard — good quality, tiny adapters, mergeable at inference. The others are mostly historical or research interest now."</p>
-    </div>
-
-    <h3>Preference alignment</h3>
-    <ul>
-      <li><strong>RLHF</strong> — train a <strong>reward model</strong> on human preference comparisons, then optimise the LLM against it with RL (<strong>PPO</strong>). Powerful, complex, unstable.</li>
-      <li><strong>DPO</strong> — skips the reward model and the RL loop entirely; optimises directly on preference pairs with a classification-style loss. <em class="hl">Simpler, more stable, now widely preferred.</em></li>
-      <li>Also: KTO, ORPO, RLAIF (AI feedback instead of human).</li>
-    </ul>
-
-    <h3>Tokenization &amp; dataset preparation</h3>
-    <ul>
-      <li><strong>BPE</strong> — start from characters, iteratively merge the most frequent pairs. Used by GPT.</li>
-      <li><strong>WordPiece</strong> (BERT), <strong>SentencePiece / Unigram</strong> (language-agnostic, no pre-tokenization).</li>
-      <li><strong>Why subwords?</strong> Handles unseen words, keeps vocabulary manageable, works across languages.</li>
-      <li><strong>Dataset prep:</strong> deduplicate, quality-filter, format into the chat template, <strong>mask prompt tokens so loss is computed only on the response</strong>, handle truncation, hold out a validation split.</li>
-    </ul>
-    <div class="you">
-      <div class="you-lb">Your work</div>
-      <p>You did the CV equivalent on the Army project — the Roboflow data was mislabelled and you <strong>corrected and re-labelled it before training</strong>. Say that. Data quality work is respected far more than people expect.</p>
-    </div>
-
-    <h3>Training mechanics</h3>
-    <div class="tw">
-    <table>
-      <thead><tr><th>Term</th><th>What it does</th></tr></thead>
-      <tbody>
-        <tr><td><strong>Mixed precision (AMP)</strong></td><td>Compute in FP16/BF16 for speed and memory, keeping an FP32 master copy. <strong>BF16</strong> has wider range and is more stable. Uses loss scaling so small gradients don't underflow.</td></tr>
-        <tr><td><strong>Gradient accumulation</strong></td><td>Can't fit batch 32? Run 8 micro-batches of 4, accumulate, step once. <strong>Simulates a large batch on small hardware.</strong></td></tr>
-        <tr><td><strong>LR scheduling</strong></td><td><strong>Warmup</strong> (start tiny, ramp up — prevents early instability) then <strong>decay</strong> (cosine or linear). Nearly all LLM training uses warmup + cosine.</td></tr>
-        <tr><td><strong>Weight decay</strong></td><td>L2-style regularisation shrinking weights toward zero. <strong>AdamW</strong> decouples it from the gradient update — that's the "W".</td></tr>
-        <tr><td><strong>Gradient checkpointing</strong></td><td>Recompute activations in the backward pass instead of storing them. Less memory, more compute.</td></tr>
-        <tr><td><strong>Gradient clipping</strong></td><td>Cap gradient norm to prevent exploding gradients.</td></tr>
-      </tbody>
-    </table>
-    </div>
-
-    <h3>Distributed training</h3>
-    <ul>
-      <li><strong>Data Parallel (DDP)</strong> — full model copy per GPU, different data shards, gradients averaged. Simple; limited by the model fitting on one GPU.</li>
-      <li><strong>Tensor / Model Parallel</strong> — split individual layers across GPUs.</li>
-      <li><strong>Pipeline Parallel</strong> — different layers on different GPUs, micro-batches flowing through.</li>
-      <li><strong>FSDP</strong> — shards parameters, gradients and optimizer states. PyTorch-native, the common modern choice.</li>
-      <li><strong>DeepSpeed</strong> — Microsoft library. <strong>ZeRO</strong> stages progressively shard optimizer states (1), gradients (2), parameters (3), plus offload to CPU/NVMe.</li>
-    </ul>
-    <div class="warn">
-      <div class="warn-lb">Position this honestly</div>
-      <p>"I understand these conceptually but haven't run multi-GPU training — my work has been single-GPU fine-tuning and edge deployment. It's an area I'd want to learn on real infrastructure." <strong>Do not pretend otherwise.</strong> This is the easiest place to get caught.</p>
-    </div>
-
-    <h3>Quantization &amp; inference optimization</h3>
-    <p><strong>Why:</strong> an FP16 7B model needs ~14GB. At 4-bit, ~3.5GB. Smaller, faster, cheaper.</p>
-    <ul>
-      <li><strong>GGUF</strong> — llama.cpp's format; CPU and Apple-silicon friendly, huge in local deployment.</li>
-      <li><strong>GPTQ</strong> — post-training, layer-wise, GPU-focused, 4-bit.</li>
-      <li><strong>AWQ</strong> — activation-aware; protects salient weights, often better quality than GPTQ at 4-bit.</li>
-      <li><strong>PTQ vs QAT</strong> — post-training quantization vs quantization-aware training (better, needs retraining).</li>
-      <li><strong>KV cache</strong> — cache keys and values for previous tokens so each new token doesn't recompute the sequence. <strong>Turns O(n²) per token into O(n).</strong> Usually the dominant memory cost at inference.</li>
-      <li><strong>PagedAttention</strong> (vLLM) — manages the KV cache in pages like OS virtual memory. Far less fragmentation.</li>
-      <li><strong>MQA / GQA</strong> — share K/V heads to shrink the cache. Llama uses GQA.</li>
-      <li>Also: continuous batching, speculative decoding, FlashAttention, prefix caching.</li>
-    </ul>
-
-    <h3>Ollama vs vLLM</h3>
-    <div class="tw">
-    <table>
-      <thead><tr><th></th><th>Ollama</th><th>vLLM</th></tr></thead>
-      <tbody>
-        <tr><td><strong>Purpose</strong></td><td>Local / dev, single user</td><td>Production serving at scale</td></tr>
-        <tr><td><strong>Built on</strong></td><td>llama.cpp, GGUF</td><td>PagedAttention, CUDA</td></tr>
-        <tr><td><strong>Hardware</strong></td><td>CPU/GPU, laptops, Apple Silicon</td><td>NVIDIA GPUs</td></tr>
-        <tr><td><strong>Throughput</strong></td><td>Low — one user</td><td><strong>Very high</strong> — continuous batching</td></tr>
-        <tr><td><strong>Setup</strong></td><td><code>ollama run llama3</code></td><td>More configuration</td></tr>
-        <tr><td><strong>Use for</strong></td><td>Prototyping, offline, privacy, edge</td><td>Serving an API to real traffic</td></tr>
-      </tbody>
-    </table>
-    </div>
-    <div class="say">
-      <div class="say-lb">One-liner</div>
-      <p>"Ollama for local development and prototyping; vLLM when you're serving concurrent users in production — its PagedAttention and continuous batching give far better GPU utilisation and throughput."</p>
-    </div>
-  </section>
-
-  <!-- ============ 6. TRANSFORMERS ============ -->
+  <!-- 01 TRANSFORMERS -->
   <section id="transformers">
-    <div class="sec-head">
-      <div class="sec-num">06</div>
-      <h2>Transformers</h2>
-      <button class="readbtn" onclick="mark(this)">mark read</button>
-    </div>
+    <div class="sec-head"><div class="sec-num">01</div><h2>Transformers</h2><button class="readbtn" onclick="mark(this)">mark read</button></div>
 
-    <h3>Self-attention — the core idea</h3>
+    <h3>Self-attention</h3>
     <p>For each token, compute three vectors: <strong>Query (Q)</strong>, <strong>Key (K)</strong>, <strong>Value (V)</strong>.</p>
     <div class="grid2">
       <div class="card"><h5>Query</h5><p>"What am I looking for?"</p></div>
       <div class="card"><h5>Key</h5><p>"What do I contain?"</p></div>
       <div class="card"><h5>Value</h5><p>"What do I contribute?"</p></div>
     </div>
-    <p>Every token's Q is compared against every token's K to produce attention weights, used to take a weighted sum of the V vectors.</p>
+    <p>Every token's Q is compared against every token's K to produce attention weights, which take a weighted sum of the V vectors.</p>
 
     <h3>Scaled dot-product attention</h3>
     <div class="formula">Attention(Q,K,V) = softmax( (Q · Kᵀ) / √d<sub>k</sub> ) · V</div>
     <ul>
       <li><code>Q · Kᵀ</code> — similarity between every query and every key</li>
-      <li><strong>Why divide by √d<sub>k</sub>?</strong> With large dimensions the dot products grow, pushing softmax into regions with vanishing gradients. Scaling keeps training stable. <em class="hl">Classic interview question — know the "why", not just the formula.</em></li>
+      <li><strong>Why divide by √d<sub>k</sub>?</strong> With large dimensions the dot products grow, pushing softmax into regions with vanishing gradients. Scaling keeps training stable.</li>
       <li><code>softmax</code> — turns scores into weights summing to 1</li>
     </ul>
 
     <h3>Multi-head attention</h3>
-    <p>Run attention <strong>h times in parallel</strong> with different learned projections, then concatenate. Each head specialises — one tracks syntax, another long-range references, another local context. More expressive than one big head.</p>
+    <p>Run attention <strong>h times in parallel</strong> with different learned projections, then concatenate. Each head specialises — one tracks syntax, another long-range references, another local context. More expressive than one large head.</p>
 
     <h3>Positional encoding</h3>
-    <p>Attention is <strong>permutation-invariant</strong> — without position information, "dog bites man" equals "man bites dog." Fixes:</p>
+    <p>Attention is <strong>permutation-invariant</strong> — without position information, "dog bites man" equals "man bites dog."</p>
     <ul>
       <li><strong>Sinusoidal</strong> — fixed sine/cosine patterns (original paper)</li>
       <li><strong>Learned</strong> — trained position embeddings</li>
-      <li><strong>RoPE (Rotary)</strong> — rotates Q/K by position; used in Llama, enables context extension. <em class="hl">Current standard.</em></li>
+      <li><strong>RoPE (Rotary)</strong> — rotates Q/K by position; used in Llama, and enables context extension beyond the trained length. Current standard.</li>
       <li><strong>ALiBi</strong> — biases attention by distance</li>
     </ul>
 
     <h3>Masking</h3>
     <ul>
-      <li><strong>Causal / look-ahead mask</strong> — in decoders, token <em>i</em> only sees tokens ≤ <em>i</em>. This is what makes generation autoregressive and prevents cheating by seeing the future.</li>
+      <li><strong>Causal / look-ahead mask</strong> — in decoders, token <em>i</em> only sees tokens ≤ <em>i</em>. This makes generation autoregressive and prevents the model seeing the future during training.</li>
       <li><strong>Padding mask</strong> — ignore padding tokens in batched sequences.</li>
     </ul>
 
@@ -583,245 +220,625 @@ User query → Embed → Similarity search (top-k) → <span class="c">[Rerank]<
   → LayerNorm → Feed-Forward Network  → <span class="c">+ residual</span></pre>
     <ul>
       <li><strong>Layer normalization</strong> — normalises across features, stabilises training. <strong>Pre-LN</strong> (norm before the sublayer) is now standard over the original Post-LN. Many modern models use <strong>RMSNorm</strong>, which is cheaper.</li>
-      <li><strong>Feed-forward network</strong> — two linear layers with a non-linearity, applied per position. Usually expands to 4× model dimension and back. <strong>Holds most of the model's parameters.</strong></li>
-      <li><strong>Residual connections</strong> — the <code>+ x</code> skip; lets gradients flow through very deep stacks.</li>
+      <li><strong>Feed-forward network</strong> — two linear layers with a non-linearity, applied per position. Usually expands to 4× model dimension and back. Holds most of the model's parameters.</li>
+      <li><strong>Residual connections</strong> — the <code>+ x</code> skip lets gradients flow through very deep stacks.</li>
     </ul>
 
     <h3>The three architectures</h3>
-    <div class="tw">
-    <table>
+    <div class="tw"><table>
       <thead><tr><th>Type</th><th>Attention</th><th>Examples</th><th>Best for</th></tr></thead>
       <tbody>
-        <tr><td><strong>Encoder-only</strong></td><td>Bidirectional</td><td>BERT, RoBERTa, DistilBERT</td><td>Understanding: classification, NER, embeddings, <strong>reranking</strong></td></tr>
+        <tr><td><strong>Encoder-only</strong></td><td>Bidirectional</td><td>BERT, RoBERTa, DistilBERT</td><td>Understanding: classification, NER, embeddings, reranking</td></tr>
         <tr><td><strong>Decoder-only</strong></td><td>Causal, left-to-right</td><td>GPT, Llama, Mistral</td><td>Generation. All modern LLMs.</td></tr>
         <tr><td><strong>Encoder-decoder</strong></td><td>Both</td><td>T5, BART</td><td>Seq2seq: translation, summarisation</td></tr>
       </tbody>
-    </table>
-    </div>
+    </table></div>
     <ul>
-      <li><strong>BERT</strong> — trained with <strong>Masked Language Modelling</strong> (predict hidden words) plus next-sentence prediction. Bidirectional.</li>
+      <li><strong>BERT</strong> — trained with Masked Language Modelling (predict hidden words) plus next-sentence prediction.</li>
       <li><strong>RoBERTa</strong> — BERT trained better: more data, longer, no NSP, dynamic masking.</li>
       <li><strong>DistilBERT</strong> — distilled: ~40% smaller, ~60% faster, ~97% of performance.</li>
-      <li><strong>Decoder / Causal LM</strong> — trained on <strong>next-token prediction</strong>. "Autoregressive" means generate one token, append, repeat.</li>
-      <li><strong>T5</strong> — everything framed as text-to-text.</li>
+      <li><strong>Decoder / Causal LM</strong> — trained on next-token prediction. Autoregressive means generate one token, append, repeat.</li>
+      <li><strong>T5</strong> — every task framed as text-to-text.</li>
+    </ul>
+    <div class="key"><div class="key-lb">Why this matters downstream</div>
+      <p>A cross-encoder reranker is an <strong>encoder</strong> model: it reads query and document together, bidirectionally. That's why it scores better than a bi-encoder — and why it's too slow to run over a whole corpus.</p></div>
+  </section>
+
+  <!-- 02 CONTEXT -->
+  <section id="context">
+    <div class="sec-head"><div class="sec-num">02</div><h2>Context length, and why it isn't n-grams</h2><button class="readbtn" onclick="mark(this)">mark read</button></div>
+
+    <h3>N-grams — the pre-neural approach</h3>
+    <p>An <strong>n-gram</strong> model predicts the next word using only the previous <em class="hl">n−1</em> words, by counting frequencies in a corpus.</p>
+    <ul>
+      <li><strong>Bigram (n=2):</strong> P(next | 1 previous word). "New" → "York" is frequent, so predict "York."</li>
+      <li><strong>Trigram (n=3):</strong> P(next | 2 previous words).</li>
     </ul>
 
-    <div class="you">
-      <div class="you-lb">Your connection</div>
-      <p>Your cross-encoder reranker (<code>ms-marco-MiniLM</code>) is an <strong>encoder</strong> model — it processes query and document together, bidirectionally. That's exactly why it's more accurate than a bi-encoder, and why you only run it on 500 candidates instead of 100,000.</p>
-    </div>
+    <h4>Three fatal flaws</h4>
+    <ol>
+      <li><strong>Fixed, tiny window.</strong> A 5-gram sees 4 words. It cannot link a noun at the start of a paragraph to a pronoun at the end.</li>
+      <li><strong>Combinatorial explosion.</strong> A 50,000-word vocabulary gives 50,000³ = 125 trillion possible trigrams. Most never occur — the <em class="hl">sparsity problem</em> — forcing smoothing and backoff.</li>
+      <li><strong>No notion of meaning.</strong> "cat" and "kitten" are unrelated symbols with no shared representation.</li>
+    </ol>
+
+    <h3>How context actually works in a transformer</h3>
+    <ul>
+      <li>Every token becomes an <strong>embedding</strong> — a dense vector carrying meaning.</li>
+      <li><strong>Self-attention lets every token look at every other token in the window simultaneously</strong>, learning how much to weight each one. Token 4,000 can attend directly to token 1.</li>
+      <li><strong>Context length = how many tokens can be attended over at once.</strong> Bounded by architecture and compute, not by an n-gram order.</li>
+      <li>The real limit is cost: attention is <code>O(n²)</code>. Double the context, quadruple compute and memory.</li>
+      <li><strong>Positional encoding</strong> supplies order, since attention alone is order-blind.</li>
+    </ul>
+
+    <div class="key"><div class="key-lb">In one sentence</div>
+      <p>Context length comes from self-attention — every token attends to every other token in the window, so there is no fixed n-word lookback. The constraint is that attention scales quadratically with sequence length, which is why long context is expensive.</p></div>
   </section>
-  <!-- ============ 7. VECTOR DB ============ -->
-  <section id="vectordb">
-    <div class="sec-head">
-      <div class="sec-num">07</div>
-      <h2>Vector databases</h2>
-      <button class="readbtn" onclick="mark(this)">mark read</button>
+
+  <!-- 03 LLM 101 -->
+  <section id="llm101">
+    <div class="sec-head"><div class="sec-num">03</div><h2>LLM fundamentals</h2><button class="readbtn" onclick="mark(this)">mark read</button></div>
+    <div class="tw"><table><tbody>
+      <tr><td><strong>Token</strong></td><td>A chunk of text, roughly 4 characters or 0.75 words. Models bill and limit by tokens.</td></tr>
+      <tr><td><strong>Context window</strong></td><td>Maximum tokens in one request, prompt plus response. The constraint that drives chunking and summarisation.</td></tr>
+      <tr><td><strong>Temperature</strong></td><td>Randomness. <code>0</code> is deterministic; higher is more creative. Use low values for routing, extraction and classification.</td></tr>
+      <tr><td><strong>Top-p</strong></td><td>Nucleus sampling — sample from the smallest token set covering probability mass p.</td></tr>
+      <tr><td><strong>System vs user prompt</strong></td><td>System sets role and rules; user carries the request.</td></tr>
+      <tr><td><strong>Hallucination</strong></td><td>Fluent, confident and wrong. Mitigate with retrieval grounding, citations, structured output, validation and low temperature.</td></tr>
+      <tr><td><strong>Structured output</strong></td><td>Force schema-conforming JSON so downstream code can parse it reliably. Essential for agents.</td></tr>
+      <tr><td><strong>Distillation</strong></td><td>Train a small model to imitate a larger one.</td></tr>
+      <tr><td><strong>Prompting vs RAG vs fine-tuning</strong></td><td>Prompting changes instructions. RAG changes available knowledge at runtime. Fine-tuning changes the weights.</td></tr>
+    </tbody></table></div>
+  </section>
+
+  <!-- 04 FINE-TUNING -->
+  <section id="finetune">
+    <div class="sec-head"><div class="sec-num">04</div><h2>Fine-tuning &amp; PEFT</h2><button class="readbtn" onclick="mark(this)">mark read</button></div>
+
+    <p class="formula" style="font-family:var(--body)">Rule of thumb: <strong>RAG for facts, fine-tuning for behaviour, format and domain style.</strong></p>
+
+    <h3>SFT</h3>
+    <p><strong>Supervised Fine-Tuning</strong> — train on labelled input → output pairs. The standard first step for adapting a base model to a task or an instruction-following format.</p>
+
+    <h3>PEFT — parameter-efficient fine-tuning</h3>
+    <p>Full fine-tuning of a large model needs enormous GPU memory. PEFT freezes most weights and trains a small number of new parameters instead.</p>
+
+    <div class="grid2">
+      <div class="card"><h5>LoRA — the dominant method</h5><p>Freeze weight matrix W; learn two small matrices A and B where ΔW ≈ B·A, with rank <em class="hl">r</em> far smaller than the full dimension. Trains roughly 0.1–1% of parameters.</p>
+        <ul><li><code>r</code> — rank / capacity (8, 16, 32, 64)</li><li><code>alpha</code> — scaling factor</li><li>Target modules — usually attention Q/K/V/O</li></ul>
+        <p style="margin-top:9px">Adapters are a few MB, so many task-specific adapters can share one base model — and LoRA can be merged into the base weights, adding zero inference latency.</p></div>
+      <div class="card"><h5>QLoRA</h5><p>LoRA on top of a <strong>4-bit quantized</strong> base model. Makes fine-tuning large models possible on a single consumer GPU. Introduced NF4 quantization, double quantization and paged optimizers.</p></div>
+      <div class="card"><h5>Adapters</h5><p>Small bottleneck layers inserted between transformer layers. Predates LoRA and adds inference latency, because it can't be merged into the base weights.</p></div>
+      <div class="card"><h5>Prefix &amp; prompt tuning</h5><p><strong>Prefix:</strong> trainable vectors prepended to keys and values at every layer. <strong>Prompt:</strong> lighter still — soft prompt embeddings at the input layer only. Effective mainly at large scale.</p></div>
+      <div class="card"><h5>BitFit</h5><p>Train <strong>only the bias terms</strong>. Extremely few parameters, and surprisingly competitive on some tasks.</p></div>
+      <div class="card"><h5>Side tuning</h5><p>Train a separate small side network whose output is combined with the frozen base model.</p></div>
     </div>
 
-    <div class="tw">
-    <table>
+    <div class="key"><div class="key-lb">In practice</div>
+      <p>LoRA or QLoRA in almost every case — good quality, tiny adapters, mergeable at inference. The others are largely historical or research interest now.</p></div>
+
+    <h3>Preference alignment</h3>
+    <ul>
+      <li><strong>RLHF</strong> — train a <strong>reward model</strong> on human preference comparisons, then optimise the LLM against it with RL (<strong>PPO</strong>). Powerful, complex, unstable.</li>
+      <li><strong>DPO</strong> — skips the reward model and RL loop entirely, optimising directly on preference pairs with a classification-style loss. Simpler, more stable, now widely preferred.</li>
+      <li>Also: <strong>KTO</strong>, <strong>ORPO</strong>, <strong>RLAIF</strong> (AI feedback rather than human).</li>
+    </ul>
+
+    <h3>Tokenization &amp; dataset preparation</h3>
+    <ul>
+      <li><strong>BPE (Byte-Pair Encoding)</strong> — start from characters, iteratively merge the most frequent pairs. Used by GPT.</li>
+      <li><strong>WordPiece</strong> (BERT) and <strong>SentencePiece / Unigram</strong> (language-agnostic, no pre-tokenization required).</li>
+      <li><strong>Why subwords?</strong> Handles unseen words, keeps vocabulary manageable, works across languages.</li>
+      <li><strong>Dataset prep:</strong> deduplicate, quality-filter, format into the model's chat template, <strong>mask prompt tokens so loss is computed only on the response</strong>, handle truncation, hold out a validation split.</li>
+    </ul>
+    <div class="note"><div class="note-lb">Underrated</div>
+      <p>Dataset correction usually beats model selection. Mislabelled or inconsistent data caps performance no matter which architecture sits on top of it.</p></div>
+  </section>
+
+  <!-- 05 MECHANICS -->
+  <section id="mechanics">
+    <div class="sec-head"><div class="sec-num">05</div><h2>Training mechanics &amp; distributed training</h2><button class="readbtn" onclick="mark(this)">mark read</button></div>
+
+    <div class="tw"><table>
+      <thead><tr><th>Term</th><th>What it does</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Mixed precision (AMP)</strong></td><td>Compute in FP16/BF16 for speed and memory while keeping an FP32 master copy. <strong>BF16</strong> has wider range and is more stable. Uses loss scaling so small gradients don't underflow.</td></tr>
+        <tr><td><strong>Gradient accumulation</strong></td><td>Can't fit batch size 32? Run 8 micro-batches of 4, accumulate gradients, step once. Simulates a large batch on small hardware.</td></tr>
+        <tr><td><strong>LR scheduling</strong></td><td><strong>Warmup</strong> (start tiny, ramp up — prevents early instability) then <strong>decay</strong> (cosine or linear). Nearly all LLM training uses warmup plus cosine decay.</td></tr>
+        <tr><td><strong>Weight decay</strong></td><td>L2-style regularisation shrinking weights toward zero to reduce overfitting. <strong>AdamW</strong> decouples it from the gradient update — that's the "W".</td></tr>
+        <tr><td><strong>Gradient checkpointing</strong></td><td>Recompute activations during the backward pass instead of storing them. Less memory, more compute.</td></tr>
+        <tr><td><strong>Gradient clipping</strong></td><td>Cap the gradient norm to prevent exploding gradients.</td></tr>
+      </tbody>
+    </table></div>
+
+    <h3>Distributed training</h3>
+    <ul>
+      <li><strong>Data Parallel (DDP)</strong> — a full model copy on each GPU, different data shards, gradients averaged. Simple, but limited by the model fitting on one GPU.</li>
+      <li><strong>Tensor / model parallel</strong> — split individual layers across GPUs.</li>
+      <li><strong>Pipeline parallel</strong> — different layers on different GPUs, micro-batches flowing through.</li>
+      <li><strong>FSDP</strong> — shards parameters, gradients and optimizer states across GPUs. PyTorch-native, the common modern choice.</li>
+      <li><strong>DeepSpeed</strong> — Microsoft's library. <strong>ZeRO</strong> stages progressively shard optimizer states (1), gradients (2) and parameters (3), plus offload to CPU or NVMe.</li>
+    </ul>
+  </section>
+
+  <!-- 06 INFERENCE -->
+  <section id="inference">
+    <div class="sec-head"><div class="sec-num">06</div><h2>Quantization &amp; inference optimization</h2><button class="readbtn" onclick="mark(this)">mark read</button></div>
+
+    <p><strong>Why it matters:</strong> an FP16 7B model needs roughly 14GB. At 4-bit, roughly 3.5GB. Smaller, faster, cheaper — at some accuracy cost.</p>
+
+    <h3>Quantization formats</h3>
+    <ul>
+      <li><strong>GGUF</strong> — llama.cpp's format; CPU and Apple-silicon friendly, dominant in local deployment.</li>
+      <li><strong>GPTQ</strong> — post-training, layer-wise, GPU-focused, 4-bit.</li>
+      <li><strong>AWQ</strong> — activation-aware weight quantization; protects the salient weights identified via activations, often better quality than GPTQ at 4-bit.</li>
+      <li><strong>INT8 / INT4</strong> — the bit widths themselves.</li>
+      <li><strong>PTQ vs QAT</strong> — post-training quantization versus quantization-aware training. QAT gives better quality but requires retraining.</li>
+    </ul>
+
+    <h3>Inference optimization</h3>
+    <ul>
+      <li><strong>KV cache</strong> — during generation, keys and values for previous tokens are cached so each new token doesn't recompute the whole sequence. <strong>Turns O(n²) per token into O(n).</strong> Usually the dominant memory cost at inference.</li>
+      <li><strong>PagedAttention</strong> (vLLM) — manages the KV cache in pages like OS virtual memory, dramatically reducing fragmentation and waste.</li>
+      <li><strong>MQA / GQA</strong> — Multi-Query and Grouped-Query Attention share K/V heads to shrink the cache. Llama uses GQA.</li>
+      <li><strong>Continuous batching</strong> — new requests join the batch as others finish, instead of waiting for a full batch.</li>
+      <li><strong>Speculative decoding</strong> — a small draft model proposes tokens, the large model verifies them in parallel.</li>
+      <li><strong>FlashAttention</strong> — IO-aware exact attention; faster and lower memory without approximating.</li>
+      <li><strong>Prefix caching</strong> — reuse computation for shared prompt prefixes across requests.</li>
+    </ul>
+
+    <h3>Ollama vs vLLM</h3>
+    <div class="tw"><table>
+      <thead><tr><th></th><th>Ollama</th><th>vLLM</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Purpose</strong></td><td>Local and development, single user</td><td>Production serving at scale</td></tr>
+        <tr><td><strong>Built on</strong></td><td>llama.cpp, GGUF</td><td>PagedAttention, CUDA</td></tr>
+        <tr><td><strong>Hardware</strong></td><td>CPU/GPU, laptops, Apple Silicon</td><td>NVIDIA GPUs</td></tr>
+        <tr><td><strong>Throughput</strong></td><td>Low — one user at a time</td><td>Very high — continuous batching</td></tr>
+        <tr><td><strong>Setup</strong></td><td><code>ollama run llama3</code></td><td>More configuration</td></tr>
+        <tr><td><strong>Use for</strong></td><td>Prototyping, offline, privacy, edge</td><td>Serving an API to real traffic</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+  <!-- 07 RAG -->
+  <section id="rag">
+    <div class="sec-head"><div class="sec-num">07</div><h2>RAG — retrieval-augmented generation</h2><button class="readbtn" onclick="mark(this)">mark read</button></div>
+
+    <pre>Documents → Chunking → Embedding → Vector store
+                                        ↓
+User query → Embed → Similarity search (top-k) → <span class="c">[Rerank]</span> → Prompt → LLM → Answer</pre>
+
+    <h3>Document parsing</h3>
+    <p>PDFs, DOCX and HTML into clean text. The hard parts are tables, multi-column layouts, scanned pages needing OCR, and headers or footers polluting chunks. Tools: unstructured.io, PyMuPDF, LlamaParse. <strong>Garbage parsing gives garbage retrieval</strong>, and no amount of model quality recovers it.</p>
+
+    <h3>Chunking strategies</h3>
+    <ul>
+      <li><strong>Fixed-size with overlap</strong> — simple baseline, e.g. 512 tokens with 50 overlap. Overlap stops ideas being cut in half at boundaries.</li>
+      <li><strong>Recursive character</strong> — split on paragraph, then sentence, then word boundaries in order.</li>
+      <li><strong>Semantic chunking</strong> — split where embedding similarity drops, i.e. at topic changes.</li>
+      <li><strong>Structure-aware</strong> — split by heading or section. Usually best when the document has real structure.</li>
+      <li><strong>Parent-document / small-to-big</strong> — embed small chunks for precise retrieval, return the larger parent for context.</li>
+    </ul>
+    <p><strong>The trade-off:</strong> small chunks retrieve precisely but lose surrounding context; large chunks preserve context but retrieve noisily. <em class="hl">Chunking quality determines RAG quality more than model choice does.</em></p>
+
+    <h3>Embeddings &amp; vector search</h3>
+    <p>Text becomes a vector so semantic similarity becomes geometric distance. Common models: <code>all-MiniLM-L6-v2</code> (fast, 384-dim), BGE, E5, OpenAI text-embedding-3. <strong>The same model must embed both documents and queries.</strong></p>
+    <ul>
+      <li><strong>Exact kNN</strong> is O(n) — too slow at scale, so production uses approximate search (<strong>ANN</strong>).</li>
+      <li><strong>HNSW</strong> — layered proximity graph, greedy search from the top layer down. Fast, high recall, memory-hungry. The common default.</li>
+      <li><strong>IVF</strong> — cluster the vectors, search only the nearest <code>nprobe</code> clusters. Lower memory; recall depends on nprobe.</li>
+      <li><strong>IVF-PQ</strong> — adds Product Quantization to compress vectors. Large memory savings, some accuracy cost.</li>
+      <li><strong>Metrics</strong> — cosine similarity, dot product, L2 distance.</li>
+    </ul>
+
+    <h3>Reranking — the two-stage pattern</h3>
+    <div class="grid2">
+      <div class="card"><h5>Bi-encoder (stage 1)</h5><p>Embeds query and document <strong>separately</strong>. Fast and precomputable, so it scales to millions of documents. Used for broad recall.</p></div>
+      <div class="card"><h5>Cross-encoder (stage 2)</h5><p>Processes query and document <strong>together</strong>. Far more accurate, far too slow to run over a whole corpus. Used for precision on a shortlist.</p></div>
+    </div>
+    <div class="key"><div class="key-lb">Why two stages</div>
+      <p>Retrieve broadly with the bi-encoder — typically a few hundred candidates — then rerank that shortlist with the cross-encoder. You get most of the cross-encoder's accuracy at a fraction of its cost. This is the standard production retrieval architecture.</p></div>
+
+    <h3>Beyond the basics</h3>
+    <ul>
+      <li><strong>Hybrid search</strong> — dense semantic search plus sparse keyword search (<strong>BM25</strong>). BM25 catches exact terms, product codes, error strings and rare names that embeddings blur. Merge results with <strong>Reciprocal Rank Fusion</strong>.</li>
+      <li><strong>Query transformation</strong> — rewriting for clarity, multi-query paraphrases retrieved in parallel, or decomposition of a complex question into sub-questions.</li>
+      <li><strong>HyDE</strong> — ask the LLM to write a <em class="hl">hypothetical answer</em>, embed that, and search with it. Works because a hypothetical answer sits closer in embedding space to real answers than the question does.</li>
+      <li><strong>Context integration</strong> — ordering matters, since models attend more to the start and end of context: the "lost in the middle" problem. Also deduplication, token budgeting and context compression.</li>
+      <li><strong>Multi-hop reasoning</strong> — chained retrieval for questions requiring intermediate facts. Requires retrieve → reason → retrieve again.</li>
+      <li><strong>Citation generation</strong> — tie each claim to a source ID so answers are auditable, and so hallucinated justifications become detectable.</li>
+    </ul>
+
+    <h3>RAG evaluation</h3>
+    <div class="tw"><table>
+      <thead><tr><th>Metric</th><th>Question it answers</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Faithfulness</strong></td><td>Is the answer actually supported by the retrieved context? The hallucination check.</td></tr>
+        <tr><td><strong>Answer relevance</strong></td><td>Does the answer address the question asked?</td></tr>
+        <tr><td><strong>Context precision</strong></td><td>Are the retrieved chunks relevant, or is the context padded with noise?</td></tr>
+        <tr><td><strong>Context recall</strong></td><td>Did retrieval find everything needed to answer?</td></tr>
+        <tr><td><strong>Hit rate, MRR, NDCG@k</strong></td><td>Standard retrieval ranking quality.</td></tr>
+      </tbody>
+    </table></div>
+    <div class="key"><div class="key-lb">The insight that saves the most time</div>
+      <p>Evaluate retrieval and generation <strong>separately</strong>. Most RAG failures are retrieval failures — the model answered badly because the right chunk was never in the context. Debugging the prompt when the problem is the retriever wastes weeks.</p></div>
+  </section>
+
+  <!-- 08 VECTOR DB -->
+  <section id="vectordb">
+    <div class="sec-head"><div class="sec-num">08</div><h2>Vector databases</h2><button class="readbtn" onclick="mark(this)">mark read</button></div>
+
+    <div class="tw"><table>
       <thead><tr><th></th><th>Type</th><th>Strengths</th><th>Watch out</th></tr></thead>
       <tbody>
-        <tr><td><strong>FAISS</strong></td><td>Library, not a DB</td><td>Fast, free, local, many index types. <em class="hl">Yours.</em></td><td>No persistence layer, no metadata filtering, no server — you manage it</td></tr>
-        <tr><td><strong>ChromaDB</strong></td><td>Embedded DB</td><td>Dead simple, Python-native, good for prototypes</td><td>Not built for massive scale</td></tr>
+        <tr><td><strong>FAISS</strong></td><td>Library, not a database</td><td>Fast, free, local, many index types</td><td>No persistence layer, no metadata filtering, no server — you manage all of it</td></tr>
+        <tr><td><strong>ChromaDB</strong></td><td>Embedded database</td><td>Simple, Python-native, good for prototypes</td><td>Not built for massive scale</td></tr>
         <tr><td><strong>Qdrant</strong></td><td>Server (Rust)</td><td>Excellent metadata filtering, fast, self-host or cloud</td><td>Ops overhead if self-hosted</td></tr>
-        <tr><td><strong>Pinecone</strong></td><td>Managed cloud</td><td>Zero ops, scales, serverless</td><td>Cost, vendor lock-in</td></tr>
-        <tr><td><strong>Weaviate</strong></td><td>Server</td><td>Built-in hybrid search, modules, GraphQL</td><td>Heavier</td></tr>
+        <tr><td><strong>Pinecone</strong></td><td>Managed cloud</td><td>Zero ops, scales, serverless tier</td><td>Cost, vendor lock-in</td></tr>
+        <tr><td><strong>Weaviate</strong></td><td>Server</td><td>Built-in hybrid search, modules, GraphQL</td><td>Heavier to operate</td></tr>
+        <tr><td><strong>pgvector</strong></td><td>Postgres extension</td><td>Vectors alongside relational data, one database to run</td><td>Slower at very large scale than dedicated engines</td></tr>
       </tbody>
-    </table>
-    </div>
-    <p><strong>Pick one to speak about properly.</strong> Say FAISS is what you've used, and Qdrant or Pinecone is what you'd reach for if you needed a real database with filtering and ops behind it.</p>
+    </table></div>
 
     <h4>CRUD in a vector store</h4>
-    <p>Upsert (insert-or-update by ID), fetch by ID, delete, and <strong>filtered search</strong> — vector similarity combined with a metadata condition, e.g. <code>department = "network_ops"</code>. Note that updating a vector usually means re-embedding it.</p>
+    <p>Upsert (insert-or-update by ID), fetch by ID, delete, and <strong>filtered search</strong> — vector similarity combined with a metadata condition such as <code>tenant_id = "acme"</code>. Note that updating a document's text means re-embedding it; the vector isn't editable in place.</p>
 
     <h4>Indexing &amp; query optimization</h4>
     <ul>
-      <li>Index type — HNSW vs IVF</li>
-      <li>HNSW parameters — <code>M</code>, <code>ef_construction</code>, <code>ef_search</code></li>
-      <li>IVF — <code>nprobe</code> (how many clusters to search)</li>
-      <li>Quantization for memory savings</li>
-      <li>Sharding and replication for scale</li>
-      <li><strong>Pre- vs post-filtering</strong> — filter before or after the ANN search. Big performance implications, and a good detail to raise.</li>
+      <li>Index type — HNSW for recall and speed, IVF for lower memory</li>
+      <li>HNSW parameters — <code>M</code> (graph connectivity), <code>ef_construction</code> (build quality), <code>ef_search</code> (query-time recall vs latency)</li>
+      <li>IVF — <code>nprobe</code> controls how many clusters are searched</li>
+      <li>Quantization for memory savings at some recall cost</li>
+      <li>Sharding and replication for scale and availability</li>
+      <li><strong>Pre- vs post-filtering</strong> — filtering before the ANN search preserves result counts but is slower; filtering after is faster but can return too few results. This choice has real performance consequences at scale.</li>
     </ul>
   </section>
 
-  <!-- ============ 8. LANGCHAIN ============ -->
-  <section id="langchain">
-    <div class="sec-head">
-      <div class="sec-num">08</div>
-      <h2>LangChain &amp; LangGraph</h2>
-      <button class="readbtn" onclick="mark(this)">mark read</button>
+  <!-- 09 AGENTIC -->
+  <section id="agentic">
+    <div class="sec-head"><div class="sec-num">09</div><h2>Agentic AI</h2><button class="readbtn" onclick="mark(this)">mark read</button></div>
+
+    <h3>What makes something an agent</h3>
+    <p>An LLM that can <strong>decide and act</strong>, not just answer. Five components:</p>
+    <ol>
+      <li><strong>Perception</strong> — takes input across modalities</li>
+      <li><strong>Reasoning and routing</strong> — decides what to do next</li>
+      <li><strong>Tool use</strong> — calls external functions, APIs and retrieval</li>
+      <li><strong>Memory</strong> — carries state across turns and sessions</li>
+      <li><strong>Autonomy</strong> — acts on triggers without being prompted each time</li>
+    </ol>
+
+    <h4>The agent loop</h4>
+    <pre>Observe → Think (which tool?) → Act (call tool) → Observe result → repeat → Answer</pre>
+
+    <h3>Function / tool calling — the mechanism</h3>
+    <pre>1. You send tool JSON schemas alongside the request
+2. Model returns a structured <span class="c">tool_call</span> — name + arguments
+3. <span class="c">Your code executes it</span> — the model never runs anything itself
+4. You return the result as a tool message
+5. Model continues, or calls another tool</pre>
+    <p>Modern APIs support <strong>parallel tool calls</strong>, where the model requests several independent tools in one turn. The tool's <strong>description is what the model uses to decide</strong> — writing precise tool descriptions is genuine engineering work, not documentation.</p>
+
+    <h3>Patterns</h3>
+    <ul>
+      <li><strong>ReAct (Reason + Act)</strong> — interleaved <code>Thought → Action → Observation</code> cycles. The foundational agent pattern.</li>
+      <li><strong>Router / dispatcher</strong> — a classifier picks the right handler or tool before any expensive work happens.</li>
+      <li><strong>Plan-and-Execute</strong> — produce a full plan up front, then execute steps. Fewer model calls, less adaptive.</li>
+      <li><strong>ReWOO</strong> — plan without interleaved observations to reduce token cost.</li>
+      <li><strong>Reflexion</strong> — the agent critiques its own output and retries.</li>
+      <li><strong>Tree of Thoughts</strong> — explore multiple reasoning branches and select the best.</li>
+      <li><strong>Supervisor / worker</strong> — a coordinating agent delegates to specialists.</li>
+      <li><strong>Human-in-the-loop</strong> — pause for approval before consequential or irreversible actions.</li>
+    </ul>
+
+    <h3>The engineering disciplines</h3>
+    <div class="grid2">
+      <div class="card"><h5>Harness engineering</h5><p>The scaffolding around the model: how context is fed, tools exposed, outputs parsed, retries handled and limits enforced. The harness often matters more than the model.</p></div>
+      <div class="card"><h5>Loop engineering</h5><p>Stopping conditions, maximum iterations, detecting repeat loops where the agent cycles on the same action, and knowing when to give up and escalate.</p></div>
+      <div class="card"><h5>Context engineering</h5><p>What goes in the window and in what order. Budgeting tokens across system prompt, tool schemas, memory, retrieved documents and history — with compaction when it overflows. Currently the highest-leverage skill in agent building.</p></div>
+      <div class="card"><h5>Tool design</h5><p>A small set of well-named tools with precise descriptions and strict schemas beats many overlapping ones. Return errors the model can act on. Make tools idempotent where possible.</p></div>
+      <div class="card"><h5>Memory architecture</h5><p>Short-term (conversation window), long-term (vector store), episodic (what happened), semantic (facts), procedural (how to do things). Decide what to write, when to retrieve and when to forget.</p></div>
+      <div class="card"><h5>Guardrails &amp; permissions</h5><p>Input validation, output filtering, tool allow-lists, scoped credentials, spend and rate caps, sandboxed execution, approval gates on destructive actions.</p></div>
+      <div class="card"><h5>Observability &amp; tracing</h5><p>Spans per LLM and tool call, token and cost accounting, latency breakdown, failure clustering. LangSmith, Langfuse, OpenTelemetry, Arize Phoenix.</p></div>
+      <div class="card"><h5>Multi-agent frameworks</h5><p><strong>CrewAI</strong> (role-based crews), <strong>AutoGen</strong> (conversational multi-agent), <strong>Google ADK</strong>, <strong>LangGraph</strong> (graph-based, most control), <strong>OpenAI Agents SDK</strong>.</p></div>
     </div>
 
-    <div class="warn">
-      <div class="warn-lb">Be honest here</div>
-      <p>You used <strong>n8n</strong>, not LangChain. Know the concepts, don't claim production use. The mapping between them is your strongest angle — see the closing line below.</p>
+    <h3>Evaluating agents</h3>
+    <p>Harder than evaluating a single model response, because the path matters as much as the answer.</p>
+    <ul>
+      <li><strong>Task success rate</strong> — did it achieve the goal end to end</li>
+      <li><strong>Tool-call accuracy</strong> — right tool, right arguments, right order</li>
+      <li><strong>Trajectory evaluation</strong> — was the path sensible, or did it stumble into the right answer</li>
+      <li><strong>LLM-as-judge</strong> — a model scores outputs against a rubric; cheap, scalable, needs its own validation</li>
+      <li><strong>Latency and cost per task</strong> — an agent that succeeds after 40 tool calls may still be unusable</li>
+      <li><strong>Regression suite</strong> — a fixed set of cases run on every prompt or model change</li>
+    </ul>
+    <div class="warn"><div class="warn-lb">The common failure</div>
+      <p>Teams ship agents with no evaluation harness, then change a prompt and have no way to know whether they improved anything. Build the eval set before the agent gets complicated — retrofitting it is far more painful.</p></div>
+  </section>
+
+  <!-- 10 MCP -->
+  <section id="mcp">
+    <div class="sec-head"><div class="sec-num">10</div><h2>MCP — Model Context Protocol</h2><button class="readbtn" onclick="mark(this)">mark read</button></div>
+
+    <p>An open standard for connecting AI models to external tools and data, so integrations aren't rewritten for every client. Often described as "a USB-C port for AI tools." It passes <strong>JSON-RPC</strong> messages between an MCP <strong>client</strong> (the AI application) and an MCP <strong>server</strong> (the thing exposing capabilities).</p>
+
+    <h4>The three primitives</h4>
+    <div class="grid2">
+      <div class="card"><h5>Tools</h5><p>Callable functions the model can invoke. The most used primitive by a wide margin.</p></div>
+      <div class="card"><h5>Resources</h5><p>Data the model can read.</p></div>
+      <div class="card"><h5>Prompts</h5><p>Reusable prompt templates the server offers.</p></div>
     </div>
+
+    <h3>The 2026-07-28 revision</h3>
+    <p>Shipped 28 July 2026, the largest change since launch. Most material written before that date describes the older stateful model.</p>
+    <div class="tw"><table>
+      <thead><tr><th></th><th class="old">Previous · 2025-11-25</th><th class="new">Current · 2026-07-28</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Core model</strong></td><td class="old">Stateful</td><td class="new">Stateless</td></tr>
+        <tr><td><strong>Handshake</strong></td><td class="old"><code>initialize</code> / <code>initialized</code> required</td><td class="new">Removed</td></tr>
+        <tr><td><strong>Sessions</strong></td><td class="old"><code>Mcp-Session-Id</code> pinned a client to one server instance</td><td class="new">Removed — any instance can serve any request</td></tr>
+        <tr><td><strong>Deployment</strong></td><td class="old">Sticky sessions, shared session store, held-open streams</td><td class="new">Plain round-robin load balancer</td></tr>
+        <tr><td><strong>Long-running work</strong></td><td class="old">In the core protocol</td><td class="new">Moved to the <strong>Tasks</strong> extension</td></tr>
+        <tr><td><strong>Extensions</strong></td><td class="old">—</td><td class="new">New framework, including <strong>MCP Apps</strong> for server-rendered UI</td></tr>
+        <tr><td><strong>Auth</strong></td><td class="old">OAuth 2.1</td><td class="new">Hardened, closer to OAuth / OIDC; Dynamic Client Registration deprecated</td></tr>
+        <tr><td><strong>Deprecated</strong></td><td class="old">—</td><td class="new">Roots, Sampling, Logging (SEP-2577)</td></tr>
+      </tbody>
+    </table></div>
+
+    <h4>Transports</h4>
+    <ul>
+      <li><strong>stdio</strong> — the server runs as a local subprocess communicating over stdin/stdout. Simplest option for local tools.</li>
+      <li><strong>Streamable HTTP</strong> — a single endpoint using POST and GET with optional SSE streaming. Replaced the older HTTP+SSE transport in the 2025-03-26 revision.</li>
+    </ul>
+    <p>Versions are dates in <code>YYYY-MM-DD</code> form. Tier 1 SDKs are TypeScript, Python, Go and C#, and the stateless migration preserved backward compatibility so existing servers continued working.</p>
+
+    <div class="key"><div class="key-lb">Why the stateless change matters</div>
+      <p>Under the old model, a remote MCP server needed sticky sessions and a shared session store because the handshake bound a client to one instance. Removing session state means MCP servers scale like ordinary stateless web services — which is what made remote MCP practical to operate at scale.</p></div>
+  </section>
+
+  <!-- 11 LANGCHAIN -->
+  <section id="langchain">
+    <div class="sec-head"><div class="sec-num">11</div><h2>LangChain &amp; LangGraph</h2><button class="readbtn" onclick="mark(this)">mark read</button></div>
 
     <h3>LangChain core</h3>
     <ul>
-      <li><strong>Chains</strong> — compose steps into a pipeline. Modern LangChain uses <strong>LCEL</strong> with the pipe operator: <code>prompt | model | parser</code>. Gives streaming, batching and async for free.</li>
-      <li><strong>Prompts &amp; templates</strong> — <code>PromptTemplate</code> / <code>ChatPromptTemplate</code> with variable interpolation; few-shot templates with example selectors.</li>
-      <li><strong>Tools &amp; tool calling</strong> — a tool is name + description + input schema + function. <strong>The description is what the LLM uses to decide</strong>, so writing good tool descriptions is real engineering. <code>@tool</code> decorator; <code>bind_tools()</code> attaches them.</li>
-      <li><strong>Agents</strong> — an LLM in a loop choosing tools until done. The classic <code>AgentExecutor</code> is now largely superseded by LangGraph.</li>
-      <li><strong>Memory</strong> — conversation buffer, windowed buffer (last k), summary memory (LLM-compressed), vector-backed memory (retrieve relevant past turns).</li>
-      <li><strong>Retrievers</strong> — the interface over a vector store: MultiQuery, ContextualCompression, ParentDocument, SelfQuery (LLM writes metadata filters), EnsembleRetriever (hybrid).</li>
-      <li><strong>Output parsers</strong> — enforce structure (<code>PydanticOutputParser</code>, JSON) with retry on parse failure.</li>
-      <li><strong>Loaders &amp; splitters</strong> — ingestion; <code>RecursiveCharacterTextSplitter</code> is the workhorse.</li>
-      <li><strong>Callbacks / LangSmith</strong> — tracing, debugging, evaluation, monitoring.</li>
+      <li><strong>Chains</strong> — compose steps into a pipeline. Modern LangChain uses <strong>LCEL</strong> with the pipe operator: <code>prompt | model | parser</code>, which provides streaming, batching and async for free.</li>
+      <li><strong>Prompts &amp; templates</strong> — <code>PromptTemplate</code> and <code>ChatPromptTemplate</code> with variable interpolation, plus few-shot templates with example selectors.</li>
+      <li><strong>Tools &amp; tool calling</strong> — a tool is a name, description, input schema and function. The <code>@tool</code> decorator defines one; <code>bind_tools()</code> attaches them to a model.</li>
+      <li><strong>Agents</strong> — an LLM in a loop choosing tools until done. The classic <code>AgentExecutor</code> is largely superseded by LangGraph.</li>
+      <li><strong>Memory</strong> — conversation buffer, windowed buffer (last k turns), summary memory (LLM-compressed history), vector-backed memory (retrieve relevant past turns).</li>
+      <li><strong>Retrievers</strong> — the interface over a vector store: MultiQuery, ContextualCompression, ParentDocument, SelfQuery (the LLM writes metadata filters), EnsembleRetriever for hybrid.</li>
+      <li><strong>Output parsers</strong> — enforce structure with <code>PydanticOutputParser</code> or JSON mode, with retry on parse failure.</li>
+      <li><strong>Loaders &amp; splitters</strong> — the ingestion side; <code>RecursiveCharacterTextSplitter</code> is the workhorse.</li>
+      <li><strong>Callbacks / LangSmith</strong> — tracing, debugging, evaluation and monitoring.</li>
     </ul>
 
-    <h3>LangGraph — the one that matters now</h3>
-    <p>Agents modelled as a <strong>stateful graph</strong> rather than a linear chain.</p>
+    <h3>LangGraph</h3>
+    <p>Agents modelled as a <strong>stateful graph</strong> rather than a linear chain. This is where most serious agent work happens now.</p>
     <ul>
-      <li><strong>State</strong> — a typed shared object (often a TypedDict) every node reads and writes, with <strong>reducers</strong> merging updates (e.g. appending to a message list).</li>
+      <li><strong>State</strong> — a typed shared object every node reads and writes, with <strong>reducers</strong> defining how updates merge (for example appending to a message list rather than overwriting it).</li>
       <li><strong>Nodes</strong> — functions taking state and returning a state update.</li>
-      <li><strong>Edges</strong> — transitions. <strong>Conditional edges</strong> branch on state. <em class="hl">This is how routing is implemented — the LangGraph equivalent of your Message Router.</em></li>
-      <li><strong>Cycles</strong> — unlike chains, graphs can loop. That's what makes real agent loops (think → act → observe → think) possible.</li>
-      <li><strong>Checkpointers</strong> — save state at each step: durability, time-travel debugging, resumability.</li>
-      <li><strong>Human-in-the-loop</strong> — <code>interrupt()</code> pauses the graph for approval, then resumes.</li>
-      <li><strong>Subgraphs &amp; multi-agent</strong> — supervisor pattern (router agent delegating to specialists) or swarm/handoff patterns.</li>
-      <li><strong>Streaming</strong> — stream tokens <em>and</em> intermediate state updates.</li>
+      <li><strong>Edges</strong> — transitions between nodes. <strong>Conditional edges</strong> branch on state, which is how routing is implemented.</li>
+      <li><strong>Cycles</strong> — unlike chains, graphs can loop. That is what makes genuine agent loops possible.</li>
+      <li><strong>Checkpointers</strong> — persist state at each step, giving durability, time-travel debugging and resumability after a crash.</li>
+      <li><strong>Human-in-the-loop</strong> — <code>interrupt()</code> pauses the graph pending approval, then resumes from the checkpoint.</li>
+      <li><strong>Subgraphs &amp; multi-agent</strong> — supervisor patterns where a router delegates to specialist subgraphs, or swarm-style handoffs.</li>
+      <li><strong>Streaming</strong> — stream both tokens and intermediate state updates to the client.</li>
     </ul>
-
-    <div class="say">
-      <div class="say-lb">Your honest line — this lands well</div>
-      <p>"I built my orchestration in n8n rather than LangChain — visual workflow, built-in scheduling and integrations, which let me ship it and actually run it 24/7.</p>
-      <p>The concepts map directly: my Message Router is conditional edges, my Context Loader is state loading, my Notion databases are the persistence layer. For a team codebase I'd move to LangGraph — logic in versioned, testable Python beats JSON workflow definitions."</p>
-    </div>
+    <div class="note"><div class="note-lb">Choosing an orchestration layer</div>
+      <p>Visual tools like n8n or Flowise ship fastest and include scheduling and integrations, but logic lives in JSON that is hard to version, review and unit-test. Code-first frameworks like LangGraph put that logic in versioned, testable source. The usual trajectory is prototype visually, then move to code once the workflow matters.</p></div>
   </section>
+  <!-- 12 SYSTEM DESIGN -->
+  <section id="sysdesign">
+    <div class="sec-head"><div class="sec-num">12</div><h2>LLM &amp; agent system design</h2><button class="readbtn" onclick="mark(this)">mark read</button></div>
 
-  <!-- ============ 9. RAPID FIRE ============ -->
-  <section id="rapid">
-    <div class="sec-head">
-      <div class="sec-num">09</div>
-      <h2>Rapid-fire answers</h2>
-      <button class="readbtn" onclick="mark(this)">mark read</button>
-    </div>
-    <div class="tw">
-    <table>
-      <thead><tr><th style="width:36%">Question</th><th>One-line answer</th></tr></thead>
+    <p>Most LLM systems fail in production for reasons that have nothing to do with model quality. They're too slow, too expensive, silently wrong, or they break the first time a dependency has a bad day. This section is about the parts that decide whether a system survives contact with real traffic.</p>
+
+    <h3>Where the time actually goes</h3>
+    <p>Before optimising anything, know which stage dominates. In a typical RAG or agent request:</p>
+    <div class="tw"><table>
+      <thead><tr><th>Stage</th><th>Typical share</th><th>What drives it</th></tr></thead>
       <tbody>
-        <tr><td>RAG vs fine-tuning?</td><td>RAG changes available knowledge at runtime; fine-tuning changes behaviour. Facts → RAG. Style, format, domain → fine-tune.</td></tr>
-        <tr><td>Why cross-encoder after bi-encoder?</td><td>Bi-encoder is fast and precomputable for millions; cross-encoder is accurate but slow. Retrieve broad, rerank narrow.</td></tr>
-        <tr><td>Prevent hallucination?</td><td>Ground in retrieved context, force structured output, validate before returning, low temperature, allow "I don't know."</td></tr>
-        <tr><td>Agent vs chatbot?</td><td>An agent decides and acts — tool selection, memory, autonomous triggers. A chatbot only responds.</td></tr>
-        <tr><td>Handle an LLM API failure?</td><td>Exponential backoff with jitter, fallback model, circuit breaker, dead-letter queue so nothing is silently dropped.</td></tr>
-        <tr><td>How do you choose a model?</td><td>Task fit, latency budget, cost per token, context window, and whether it must run on-prem or at the edge.</td></tr>
-        <tr><td>Reduce cost?</td><td>Smaller model on easy paths, cache repeated calls, trim prompts, batch, route only hard cases to the big model.</td></tr>
-        <tr><td>Vector DB choice?</td><td>FAISS for local and embedded; Qdrant, Weaviate or Pinecone for managed scale. Depends on ops, filtering and volume.</td></tr>
-        <tr><td>What's a token?</td><td>Roughly 4 characters. Everything is billed and limited by them.</td></tr>
-        <tr><td>How do you test an agent?</td><td>Fixed regression suite, task success rate, tool-call accuracy, trajectory review, LLM-as-judge, latency and cost tracking.</td></tr>
+        <tr><td><strong>Embedding the query</strong></td><td>Small</td><td>Model size; usually milliseconds</td></tr>
+        <tr><td><strong>Vector search</strong></td><td>Small–medium</td><td>Index type, <code>ef_search</code> / <code>nprobe</code>, corpus size, filtering strategy</td></tr>
+        <tr><td><strong>Reranking</strong></td><td>Medium</td><td>Cross-encoder is O(shortlist size) — reranking 500 costs far more than 50</td></tr>
+        <tr><td><strong>LLM generation</strong></td><td><strong>Usually dominant</strong></td><td>Output tokens × per-token latency. Input length affects time-to-first-token, output length affects total.</td></tr>
+        <tr><td><strong>Tool calls (agents)</strong></td><td><strong>Often dominant</strong></td><td>Each loop iteration is a full round-trip. Ten sequential tool calls means ten LLM calls plus ten API latencies.</td></tr>
       </tbody>
-    </table>
-    </div>
-  </section>
+    </table></div>
+    <div class="key"><div class="key-lb">The rule</div>
+      <p>Generation is usually the bottleneck in RAG; the <strong>number of sequential loop iterations</strong> is usually the bottleneck in agents. Optimising vector search when the LLM is 90% of latency is wasted effort — measure first.</p></div>
 
-  <div class="divider"></div>
-
-  <!-- ============ LLM 101 ============ -->
-  <section id="llm101">
-    <div class="sec-head">
-      <div class="sec-num">REF</div>
-      <h2>LLM fundamentals</h2>
-    </div>
-    <div class="tw">
-    <table>
-      <tbody>
-        <tr><td><strong>Token</strong></td><td>A chunk of text, ~4 characters / ~0.75 words. Models bill and limit by tokens.</td></tr>
-        <tr><td><strong>Context window</strong></td><td>Max tokens in one request (prompt + response). The constraint driving chunking and summarisation.</td></tr>
-        <tr><td><strong>Temperature</strong></td><td>Randomness. <code>0</code> = deterministic; higher = more creative. Use low for routing and extraction.</td></tr>
-        <tr><td><strong>Top-p</strong></td><td>Nucleus sampling — sample from the smallest token set covering probability mass p.</td></tr>
-        <tr><td><strong>System vs user prompt</strong></td><td>System sets role and rules; user carries the request.</td></tr>
-        <tr><td><strong>Hallucination</strong></td><td>Fluent, confident, wrong. Mitigate with RAG grounding, citations, structured output, validation, low temperature.</td></tr>
-        <tr><td><strong>Structured output</strong></td><td>Force schema-conforming JSON so downstream code can parse it. Essential for agents.</td></tr>
-        <tr><td><strong>Distillation</strong></td><td>Train a small model to imitate a large one.</td></tr>
-      </tbody>
-    </table>
-    </div>
-  </section>
-
-  <!-- ============ API ============ -->
-  <section id="api">
-    <div class="sec-head">
-      <div class="sec-num">REF</div>
-      <h2>Python &amp; APIs</h2>
-    </div>
-    <p>Their listed requirements: Python, FastAPI/Flask/Django, REST APIs, Git, CI/CD.</p>
+    <h3>Two latency numbers that matter</h3>
     <ul>
-      <li><strong>FastAPI vs Flask</strong> — FastAPI is async-native (ASGI), auto-generates OpenAPI/Swagger docs, and validates with Pydantic. Flask is sync (WSGI), lighter, more manual. <em class="hl">You used FastAPI in BTC OpenEnv — say why: async, WebSockets, auto docs.</em></li>
-      <li><strong>Pydantic</strong> — type-validated models; FastAPI uses it to validate requests and responses automatically.</li>
-      <li><strong>async / await</strong> — non-blocking I/O, so one worker handles many concurrent requests while waiting on network calls. Critical when handlers call slow LLM APIs.</li>
-      <li><strong>REST verbs</strong> — GET, POST, PUT/PATCH, DELETE. Codes: 200, 201, 400, 401, 404, <strong>429 rate limited</strong>, 500.</li>
-      <li><strong>WebSockets vs REST</strong> — REST is request/response; WebSockets keep a persistent bidirectional connection for streaming. <em class="hl">You used both.</em></li>
-      <li><strong>Idempotency</strong> — the same request twice gives the same result. Matters for retries.</li>
-      <li><strong>Rate limiting</strong> — on 429, retry with <strong>exponential backoff + jitter</strong>. Know this phrase; it comes up whenever they ask about failures.</li>
-      <li><strong>CI/CD</strong> — automated test, build and deploy on every commit.</li>
-      <li><strong>Docker</strong> — package app plus dependencies into a portable image. <em class="hl">You containerized BTC OpenEnv.</em></li>
+      <li><strong>TTFT — time to first token.</strong> Driven by prompt length (the prefill pass) plus queueing. This is what determines whether an interface feels responsive.</li>
+      <li><strong>TPOT — time per output token.</strong> Driven by model size, hardware and batch pressure. Total generation time ≈ TTFT + (output tokens × TPOT).</li>
     </ul>
+    <p>Streaming doesn't reduce total latency, but it collapses <em class="hl">perceived</em> latency to TTFT. For any user-facing surface, streaming is the single highest-return change.</p>
+
+    <h3>Reducing latency</h3>
+    <div class="grid2">
+      <div class="card"><h5>Cut output tokens</h5><p>The most direct lever, since generation is linear in output length. Ask for concise output, cap <code>max_tokens</code>, avoid making the model restate the input.</p></div>
+      <div class="card"><h5>Cut input tokens</h5><p>Shorter prompts reduce prefill time and cost. Trim boilerplate system prompts, retrieve fewer chunks, compress context.</p></div>
+      <div class="card"><h5>Stream</h5><p>Send tokens as they generate. Perceived latency drops to TTFT even though total time is unchanged.</p></div>
+      <div class="card"><h5>Parallelise</h5><p>Independent retrieval calls, tool calls and sub-questions should run concurrently, not sequentially. Async I/O matters here more than raw compute.</p></div>
+      <div class="card"><h5>Cache</h5><p>Exact-match cache for repeated queries; semantic cache keyed on embedding similarity; prompt-prefix caching for shared system prompts. Caching is often a bigger win than any model change.</p></div>
+      <div class="card"><h5>Route by difficulty</h5><p>Send easy requests to a small fast model and escalate only hard ones. A classifier or heuristic router in front of the stack cuts both latency and cost substantially.</p></div>
+      <div class="card"><h5>Shrink the loop</h5><p>For agents, fewer sequential iterations beats faster iterations. Better tool design and clearer instructions reduce round-trips more than a faster model does.</p></div>
+      <div class="card"><h5>Speculative decoding</h5><p>A small draft model proposes tokens that the large model verifies in parallel. Server-side, but worth knowing when evaluating inference providers.</p></div>
+    </div>
+
+    <h3>Quality trade-offs</h3>
+    <p>Nearly every optimisation trades against quality. Knowing the exchange rate is the job.</p>
+    <div class="tw"><table>
+      <thead><tr><th>Decision</th><th>You gain</th><th>You lose</th></tr></thead>
+      <tbody>
+        <tr><td>Smaller / quantized model</td><td>Latency, cost, memory</td><td>Reasoning depth, instruction-following, long-context reliability</td></tr>
+        <tr><td>4-bit vs 8-bit quantization</td><td>Roughly half the memory</td><td>Small but real accuracy drop, worse on edge cases than on averages</td></tr>
+        <tr><td>Fewer retrieved chunks</td><td>Latency, cost, less context noise</td><td>Recall — the answer may simply not be present</td></tr>
+        <tr><td>Skipping the reranker</td><td>A whole model call</td><td>Precision; irrelevant chunks crowd the context window</td></tr>
+        <tr><td>Larger chunks</td><td>Better context per chunk</td><td>Noisier retrieval, more wasted tokens</td></tr>
+        <tr><td>Lower <code>ef_search</code> / <code>nprobe</code></td><td>Faster vector search</td><td>Recall — relevant vectors missed entirely</td></tr>
+        <tr><td>Aggressive caching</td><td>Latency and cost</td><td>Staleness; semantic caches can return subtly wrong hits</td></tr>
+        <tr><td>Higher temperature</td><td>Variety, creativity</td><td>Consistency, parseability, reproducibility</td></tr>
+        <tr><td>More agent autonomy</td><td>Capability, less hand-holding</td><td>Predictability, cost control, auditability</td></tr>
+      </tbody>
+    </table></div>
+    <div class="note"><div class="note-lb">Make the trade explicit</div>
+      <p>The mature version of this discussion is not "which is better" but "what are we optimising for, and what is the acceptable floor on the other axis." Define the quality floor as a measurable threshold on an eval set, then optimise cost and latency underneath it.</p></div>
+
+    <h3>Handling failure</h3>
+    <p>LLM systems have more failure modes than typical services, because dependencies are slow, rate-limited, non-deterministic and occasionally confidently wrong.</p>
+    <h4>Transport-level failures</h4>
+    <ul>
+      <li><strong>Timeouts</strong> — always set them. An LLM call without a timeout can hang a worker indefinitely.</li>
+      <li><strong>Retries with exponential backoff and jitter</strong> — on 429 and 5xx. Jitter prevents thundering-herd retries from synchronising.</li>
+      <li><strong>Idempotency</strong> — retrying must not double-charge, double-send or duplicate writes. Use idempotency keys on any action with side effects.</li>
+      <li><strong>Circuit breakers</strong> — after repeated failures, stop calling the dependency and fail fast rather than queueing requests behind a dead service.</li>
+      <li><strong>Fallback models</strong> — a secondary provider or smaller model when the primary is unavailable. Requires prompt compatibility to be tested in advance.</li>
+      <li><strong>Dead-letter queues</strong> — failed work goes somewhere inspectable, never silently dropped.</li>
+      <li><strong>Graceful degradation</strong> — return partial results, cached results, or a clear error rather than nothing.</li>
+    </ul>
+    <h4>Model-level failures</h4>
+    <ul>
+      <li><strong>Malformed output</strong> — the model returns unparseable JSON. Mitigate with structured output modes, schema validation, and a repair retry that feeds the parse error back.</li>
+      <li><strong>Hallucination</strong> — mitigate with retrieval grounding, citation requirements, validation against a source of truth, and permitting "I don't know" as an acceptable answer.</li>
+      <li><strong>Wrong tool, wrong arguments</strong> — validate arguments before execution; return actionable errors the model can correct from.</li>
+      <li><strong>Infinite loops</strong> — cap iterations, detect repeated identical actions, and escalate to a human or a fallback path.</li>
+      <li><strong>Prompt injection</strong> — untrusted content in the context can carry instructions. Treat retrieved documents and tool output as data, never as instructions; scope tool permissions tightly.</li>
+      <li><strong>Silent quality regression</strong> — a provider updates a model and behaviour shifts. This is why a pinned regression suite matters more than in conventional software.</li>
+    </ul>
+
+    <h3>Cost control</h3>
+    <ul>
+      <li>Token cost scales with input and output; long system prompts multiplied by high traffic dominate bills quietly.</li>
+      <li><strong>Model routing</strong> — small model by default, large model on escalation, is typically the largest single saving.</li>
+      <li><strong>Caching</strong> — exact and semantic; prompt-prefix caching where the provider supports it.</li>
+      <li><strong>Batching</strong> — for offline and bulk workloads, batch endpoints are substantially cheaper.</li>
+      <li><strong>Cap agent loops</strong> — an unbounded agent is an unbounded invoice.</li>
+      <li><strong>Track cost per request as a first-class metric</strong>, alongside latency and error rate.</li>
+    </ul>
+
+    <h3>Scaling</h3>
+    <ul>
+      <li><strong>Stateless application servers</strong> — keep session state in a store, not in process memory, so instances scale horizontally.</li>
+      <li><strong>Queue long work</strong> — anything beyond a few seconds belongs in a background job with a status endpoint, not a held-open HTTP request.</li>
+      <li><strong>Continuous batching at the inference layer</strong> — this is why vLLM-style servers reach far higher throughput than naive per-request serving.</li>
+      <li><strong>Rate limiting per tenant</strong> — one heavy user should not exhaust shared model quota.</li>
+      <li><strong>Separate read and write paths</strong> — index building is a batch workload; retrieval is a latency-sensitive one. Don't couple them.</li>
+    </ul>
+
+    <h3>Observability</h3>
+    <p>Conventional metrics are insufficient because a request can succeed with HTTP 200 and still be completely wrong.</p>
+    <ul>
+      <li><strong>Tracing</strong> — a span per LLM call, tool call and retrieval, so a slow request can be attributed to a stage.</li>
+      <li><strong>Token and cost accounting</strong> per request, per feature, per tenant.</li>
+      <li><strong>Latency percentiles</strong> — p50 hides the problem; p95 and p99 are where users live.</li>
+      <li><strong>Quality signals</strong> — user feedback, thumbs, regeneration rate, escalation rate, abandonment. Regeneration rate is an underrated proxy for dissatisfaction.</li>
+      <li><strong>Offline evaluation</strong> — run the regression suite on every prompt, model or retrieval change, not just on code changes.</li>
+      <li><strong>Log the inputs and outputs</strong> (subject to privacy constraints) — without them, failures are unreproducible.</li>
+    </ul>
+
+    <h3>What separates systems that work</h3>
+    <div class="grid2">
+      <div class="card"><h5>Evaluation before scale</h5><p>A regression set built early makes every later change measurable. Without it, teams tune prompts by vibes and cannot tell improvement from regression.</p></div>
+      <div class="card"><h5>Deterministic where possible</h5><p>Use rules, validators and code for anything that doesn't need a model. Reserve the LLM for what genuinely requires language understanding. Deterministic components are testable, fast and free.</p></div>
+      <div class="card"><h5>Constrain the model's job</h5><p>Narrow, well-specified tasks with structured output succeed far more reliably than open-ended ones. Decomposition beats a single ambitious prompt.</p></div>
+      <div class="card"><h5>Design for the failure path</h5><p>Assume every dependency will be slow, rate-limited or wrong at some point. The happy path is the easy part.</p></div>
+      <div class="card"><h5>Version everything</h5><p>Prompts, model IDs, retrieval configs and tool schemas are all production configuration. Pin them; changing a model silently is a production change.</p></div>
+      <div class="card"><h5>Keep a human path</h5><p>Escalation to a person for low-confidence or high-stakes cases is a feature, not an admission of failure. It also generates the labelled data that improves the system.</p></div>
+    </div>
   </section>
 
-  <!-- ============ CV ============ -->
+  <!-- 13 CV -->
   <section id="cv">
-    <div class="sec-head">
-      <div class="sec-num">REF</div>
-      <h2>Computer vision — your Army &amp; Canopy work</h2>
-    </div>
+    <div class="sec-head"><div class="sec-num">13</div><h2>Computer vision &amp; edge deployment</h2><button class="readbtn" onclick="mark(this)">mark read</button></div>
+
+    <h3>Detection fundamentals</h3>
     <ul>
-      <li><strong>YOLO</strong> — single-stage detector; one forward pass predicts boxes and classes. Fast, which is why it's used at the edge. <strong>v8n = nano</strong>, the smallest variant.</li>
-      <li><strong>Fine-tuning YOLO</strong> — start from COCO-pretrained weights, continue training on your labelled data. <em class="hl">This is what you did — genuine training, not API calling.</em></li>
-      <li><strong>mAP</strong> — mean Average Precision, the standard detection metric. mAP@0.5 uses an IoU threshold of 0.5.</li>
-      <li><strong>IoU</strong> — overlap between predicted and true box.</li>
-      <li><strong>Precision vs recall</strong> — precision is "of what I flagged, how much was right" (<em class="hl">your bird problem is a precision problem</em>); recall is "of what existed, how much did I catch".</li>
-      <li><strong>Hard negatives</strong> — confusing non-target examples (birds) added deliberately so the model learns the boundary.</li>
-      <li><strong>Augmentation</strong> — synthetic variation (flip, scale, HSV/brightness, mosaic) so the model generalises to night, weather and angles.</li>
-      <li><strong>NMS</strong> — non-max suppression removes duplicate overlapping boxes.</li>
-      <li><strong>Edge inference</strong> — TensorRT, ONNX, quantization to run fast on Jetson.</li>
+      <li><strong>YOLO</strong> — single-stage detector; one forward pass predicts boxes and classes together. Fast, which is why it dominates edge deployment. Size variants run nano, small, medium, large, extra-large — <code>n</code> being smallest and fastest.</li>
+      <li><strong>Two-stage detectors</strong> (Faster R-CNN) propose regions first, then classify. More accurate historically, slower.</li>
+      <li><strong>Fine-tuning a detector</strong> — start from COCO-pretrained weights and continue training on a labelled custom dataset. Standard practice; training from scratch is rarely worth it.</li>
+      <li><strong>IoU</strong> — Intersection over Union, the overlap between predicted and ground-truth boxes.</li>
+      <li><strong>mAP</strong> — mean Average Precision, the standard detection metric. <code>mAP@0.5</code> uses an IoU threshold of 0.5; <code>mAP@0.5:0.95</code> averages across thresholds and is stricter.</li>
+      <li><strong>NMS</strong> — non-max suppression removes duplicate overlapping boxes for the same object.</li>
+      <li><strong>Confidence threshold</strong> — trades precision against recall directly, and is often the fastest quality lever available post-training.</li>
     </ul>
-    <div class="say">
-      <div class="say-lb">Framing the bird false-positives</div>
-      <p>"It's a precision problem — at 1000 metres a bird and a drone are both a few dark pixels, so there's very little signal. The fixes are hard negatives, meaning labelled bird data so the model learns the boundary, and using temporal information, because drones and birds move very differently across frames. Single-frame detection throws that signal away."</p>
-    </div>
-    <div class="you">
-      <div class="you-lb">Remember</div>
-      <p>Volunteering a real limitation <strong>with a concrete fix</strong> is a strength, not a weakness. Most candidates hide flaws. Don't skip this one.</p>
-    </div>
+
+    <h3>Precision, recall and hard negatives</h3>
+    <ul>
+      <li><strong>Precision</strong> — of what the model flagged, how much was correct. Low precision means false alarms.</li>
+      <li><strong>Recall</strong> — of what existed, how much was found. Low recall means misses.</li>
+      <li><strong>Hard negatives</strong> — visually similar non-targets deliberately added to training data so the model learns the boundary. The standard fix for a specific recurring false positive.</li>
+      <li><strong>Class imbalance</strong> — rare classes get under-predicted; handled with resampling, loss weighting or focal loss.</li>
+    </ul>
+    <div class="key"><div class="key-lb">Small-object detection</div>
+      <p>Distant or small objects are the hardest case: at long range a target may occupy only a handful of pixels, leaving very little signal. Standard approaches are higher input resolution, tiled inference over image patches, targeted data collection at that scale, anchor tuning, and using <strong>temporal information across frames</strong> — motion patterns often separate classes that single frames cannot.</p></div>
+
+    <h3>Augmentation</h3>
+    <p>Synthetic variation so the model generalises beyond the training distribution: horizontal flip, scale and crop, rotation, HSV and brightness shifts for lighting conditions, blur and noise, and <strong>mosaic</strong> (combining four images) which is standard in the YOLO training pipeline. Augmentation choice should mirror the conditions the model will actually face — night, weather, angle, distance.</p>
+
+    <h3>Edge deployment</h3>
+    <ul>
+      <li><strong>The constraint set</strong> — accuracy, latency, memory and power all bind simultaneously. Edge work is largely about managing that four-way trade-off.</li>
+      <li><strong>ONNX</strong> — an interchange format for moving models between frameworks and runtimes.</li>
+      <li><strong>TensorRT</strong> — NVIDIA's inference optimiser; layer fusion, precision calibration, kernel tuning. Substantial speedups on Jetson-class hardware.</li>
+      <li><strong>Quantization</strong> — INT8 post-training quantization is the standard edge win; the model shrinks and speeds up with a modest accuracy cost.</li>
+      <li><strong>Pruning</strong> — remove low-importance weights or channels.</li>
+      <li><strong>Model size selection</strong> — choosing a nano over a large variant is usually a bigger practical win than any post-training optimisation.</li>
+      <li><strong>Pipeline cost</strong> — capture, decode, preprocess and post-process often consume more time than inference itself. Profile the whole pipeline, not just the model.</li>
+    </ul>
   </section>
 
-  <!-- ============ UNKNOWN ============ -->
-  <section id="unknown">
-    <div class="sec-head">
-      <div class="sec-num">REF</div>
-      <h2>When you don't know something</h2>
-    </div>
-    <div class="say">
-      <div class="say-lb">Use this shape</div>
-      <p>"I haven't worked with that directly. My understanding is [what you do know]. The way I'd approach it is [concrete first step]. Is that roughly how it's used here?"</p>
-    </div>
-    <p>That reads as senior, not junior. <strong>Never bluff a number, a parameter value, or a tool you haven't touched.</strong> Every good interviewer probes one level deeper than your first answer, and invented detail collapses exactly there.</p>
-    <div class="warn">
-      <div class="warn-lb">On the augmentations you can't recall</div>
-      <p>"We used the Ultralytics augmentation pipeline — the standard set around HSV and brightness, scale, flip and mosaic. I'd have to check the exact config; that was over a year ago." <strong>Say that. Do not invent parameter values.</strong></p>
-    </div>
-    <div class="warn">
-      <div class="warn-lb">On the missing photos</div>
-      <p>"It was a defence deployment — we weren't permitted to take photos or video, and I can't share specifics beyond what I've described." Completely normal, and they will respect it.</p>
-    </div>
+  <!-- API -->
+  <section id="api">
+    <div class="sec-head"><div class="sec-num">REF</div><h2>Python &amp; APIs</h2></div>
+    <ul>
+      <li><strong>FastAPI vs Flask</strong> — FastAPI is async-native (ASGI), auto-generates OpenAPI/Swagger documentation, and validates with Pydantic. Flask is sync (WSGI), lighter and more manual. For LLM workloads, async matters because handlers spend most of their time waiting on network calls.</li>
+      <li><strong>Pydantic</strong> — type-validated data models; FastAPI uses it to validate requests and responses automatically.</li>
+      <li><strong>async / await</strong> — non-blocking I/O lets one worker handle many concurrent requests while waiting. Critical when every request calls a slow model API.</li>
+      <li><strong>REST verbs</strong> — GET, POST, PUT/PATCH, DELETE. Status codes: 200, 201, 400, 401, 404, <strong>429 rate limited</strong>, 500, 503.</li>
+      <li><strong>WebSockets vs SSE vs REST</strong> — REST for request/response; <strong>SSE</strong> for one-way server streaming (the common choice for token streaming); WebSockets for genuine bidirectional communication.</li>
+      <li><strong>Idempotency</strong> — the same request applied twice produces the same result. Essential wherever retries exist.</li>
+      <li><strong>Backpressure</strong> — when downstream is slower than incoming traffic, queue with limits and shed load deliberately rather than collapsing.</li>
+      <li><strong>Docker</strong> — package application and dependencies into a portable image; the standard unit of deployment.</li>
+      <li><strong>CI/CD</strong> — automated test, build and deploy on every commit.</li>
+    </ul>
+  </section>
+
+  <!-- QUICK REF -->
+  <section id="quickref">
+    <div class="sec-head"><div class="sec-num">REF</div><h2>Quick reference</h2></div>
+    <div class="tw"><table>
+      <thead><tr><th style="width:36%">Question</th><th>Short answer</th></tr></thead>
+      <tbody>
+        <tr><td>RAG or fine-tuning?</td><td>RAG changes available knowledge at runtime; fine-tuning changes behaviour. Facts and freshness → RAG. Style, format, domain tone → fine-tune.</td></tr>
+        <tr><td>Why rerank after retrieving?</td><td>Bi-encoders are fast and precomputable for millions of documents; cross-encoders are accurate but slow. Retrieve broad, rerank narrow.</td></tr>
+        <tr><td>How do you prevent hallucination?</td><td>Ground in retrieved context, require citations, force structured output, validate before returning, keep temperature low, allow "I don't know".</td></tr>
+        <tr><td>Agent vs chatbot?</td><td>An agent decides and acts — tool selection, memory, autonomous triggers. A chatbot only responds.</td></tr>
+        <tr><td>What dominates latency?</td><td>Generation in RAG systems; number of sequential loop iterations in agents. Measure before optimising.</td></tr>
+        <tr><td>How do you handle an API failure?</td><td>Timeouts, exponential backoff with jitter, circuit breaker, fallback model, dead-letter queue, graceful degradation.</td></tr>
+        <tr><td>How do you reduce cost?</td><td>Route easy requests to a small model, cache aggressively, trim prompts, batch offline work, cap agent iterations.</td></tr>
+        <tr><td>How do you choose a model?</td><td>Task fit, latency budget, cost per token, context window, and whether it must run on-premise or at the edge.</td></tr>
+        <tr><td>Which vector database?</td><td>FAISS for local and embedded, pgvector if Postgres is already there, Qdrant/Weaviate/Pinecone for managed scale with filtering.</td></tr>
+        <tr><td>What's a token?</td><td>Roughly four characters. Everything is billed and limited by them.</td></tr>
+        <tr><td>How do you test an agent?</td><td>Fixed regression suite, task success rate, tool-call accuracy, trajectory review, LLM-as-judge, latency and cost tracking.</td></tr>
+        <tr><td>What is prompt injection?</td><td>Untrusted content carrying instructions into the context. Treat retrieved documents and tool output as data, never instructions, and scope tool permissions tightly.</td></tr>
+      </tbody>
+    </table></div>
   </section>
 
   <footer>
-    <p><strong>Tonight:</strong> sections 1–3, then sketch the JARVIS architecture on paper twice, then pick your one "what broke" story. Everything below section 6 is for after the interview.</p>
-    <p style="margin-top:10px"><strong>Tomorrow morning:</strong> test camera, mic and internet. GitHub open in a tab. Quiet room, water, decent light.</p>
-    <p style="margin-top:10px">Sleep beats cramming. You're better prepared than you think — the gap now is delivery, not knowledge.</p>
+    <p>A working reference for LLM and agent engineering — foundations through production. Content reflects the state of tooling as of the MCP 2026-07-28 specification.</p>
+    <p style="margin-top:10px">Specifications and library APIs move quickly; verify version-specific details against current documentation before relying on them.</p>
   </footer>
 </main>
 </div>
 
 <script>
 const done = new Set();
-const total = 9;
+const total = 13;
 function mark(btn){
   const sec = btn.closest('section');
   const id = sec.id;
@@ -834,7 +851,6 @@ function mark(btn){
   document.getElementById('ptxt').textContent = n+' / '+total;
   document.getElementById('pfill').style.width = (n/total*100)+'%';
 }
-// active nav on scroll
 const secs=[...document.querySelectorAll('section[id]')];
 const links=[...document.querySelectorAll('.navlink')];
 const obs=new IntersectionObserver(es=>{
@@ -845,7 +861,6 @@ const obs=new IntersectionObserver(es=>{
   });
 },{rootMargin:'-70px 0px -70% 0px'});
 secs.forEach(s=>obs.observe(s));
-// close mobile nav on click
 links.forEach(l=>l.addEventListener('click',()=>document.querySelector('.sidebar').classList.remove('open')));
 </script>
 </body>
